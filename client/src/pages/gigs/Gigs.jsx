@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Gigs.scss";
 import GigCard from "../../components/gigCard/GigCard";
 import newRequest from "../../utils/newRequest";
@@ -12,11 +12,11 @@ function Gigs() {
   const maxRef = useRef();
 
   const {search} = useLocation();
-
-  const { isLoading, error, data } = useQuery({
+  console.log(search)
+  const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["gigs"],
     queryFn: () => 
-      newRequest.get(`/gigs${search}`).then((res) => {
+      newRequest.get(`/gigs${search}&min=${minRef.current.value}&max=${maxRef.current.value}&sort=${sort}`).then((res) => {
         return res.data;
       })
   });
@@ -27,9 +27,12 @@ function Gigs() {
     setOpen(false);
   };
 
+  useEffect(() => {
+    refetch();
+  }, [sort])
+
   const apply = ()=>{
-    console.log(minRef.current.value)
-    console.log(maxRef.current.value)
+    refetch();
   }
 
   return (
@@ -67,7 +70,7 @@ function Gigs() {
         </div>
         <div className="cards">
           {isLoading ? "loading" : error ? "Something went wrong" : data.map((gig) => (
-            <GigCard key={gig.id} item={gig} />
+            <GigCard key={gig._id} item={gig} />
           ))}
         </div>
       </div>

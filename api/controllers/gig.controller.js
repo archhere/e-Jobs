@@ -53,7 +53,7 @@ export const getGig = async (req, res, next) => {
 }
 
 export const getGigs = async (req, res, next) => {
-    const {query: {userId, cat, min, max, search}} = req;
+    const {query: {userId, cat, min, max, search, sort}} = req;
     // Using spread operator to 
     const filters = {
         ...(userId && { userId }),
@@ -66,8 +66,9 @@ export const getGigs = async (req, res, next) => {
         }),
         ...(search && { title: { $regex: search, $options: "i" } }),
     };
+    console.log("adadhghgh", filters, req.query)
     try {
-        const gigs = await Gig.find(filters).sort({ [req.query.sort]: -1 });
+        const gigs = await Gig.find(filters).sort({ [sort]: -1 });
 
         res.status(200).send(gigs || []);
     } catch(err) {

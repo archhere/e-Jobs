@@ -19,3 +19,17 @@ export const deleteUser =  async (req, res, next) => {
         res.status(500).send(`${ERROR_UNKNOWN}`);
     }
 }
+
+export const getUser = async (req, res, next) => {
+    try {
+        const id = get(req, "params.id");
+        const user = await User.findById(id);
+        if (!user) {
+            res.status(404).send(USER_NOT_FOUND);
+        }  else {
+            res.status(200).send(user);
+        }
+    } catch (error) {
+        res.status(500).send(`${ERROR_UNKNOWN}`);
+    }
+}

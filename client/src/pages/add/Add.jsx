@@ -57,8 +57,6 @@ const Add = () => {
     }
   }
 
-  console.log(state)
-
   const handleSubmit = (e) => {
     e.preventDefault();
     mutation.mutate(state);

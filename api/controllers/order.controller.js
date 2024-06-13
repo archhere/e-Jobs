@@ -43,7 +43,6 @@ export const getOrders = async (req, res, next) => {
 
 export const intent = async (req, res, next) => {
     try {
-        console.log("adahdhjad", req.params)
         const { params: {id }, userId } = req;
         const stripe = new Stripe(process.env.STRIPE);
         const gig = await Gig.findById(id);

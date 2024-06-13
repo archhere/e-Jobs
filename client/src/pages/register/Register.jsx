@@ -33,7 +33,6 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = await upload(file);
-    console.log(url)
     try{
       await newRequest.post("auth/register", {
         ...user,
@@ -44,8 +43,6 @@ function Register() {
       console.log(err)
     }
   }
-
-  console.log(user)
 
   return (
     <div className="register">

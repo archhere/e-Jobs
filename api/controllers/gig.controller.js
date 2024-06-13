@@ -66,7 +66,6 @@ export const getGigs = async (req, res, next) => {
         }),
         ...(search && { title: { $regex: search, $options: "i" } }),
     };
-    console.log("adadhghgh", filters, req.query)
     try {
         const gigs = await Gig.find(filters).sort({ [sort]: -1 });
 

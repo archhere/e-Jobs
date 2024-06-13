@@ -10,7 +10,6 @@ function Gig() {
 
   const params = useParams();
   const { id } = params;
-  console.log(id);
   const { isLoading, error, data, refetch } = useQuery ({
     queryKey: ["gig"],
     queryFn: () => 

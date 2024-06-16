@@ -16,6 +16,10 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  isSeller: {
+    type: Boolean,
+    default: false
+  },
   img: {
     type: String,
     required: false
@@ -32,9 +36,18 @@ const userSchema = new Schema({
     type: String,
     required: false
   },
-  isSeller: {
-    type: Boolean,
-    default: false
+  skills: {
+      type: [String],
+      required: false
+  },
+  sales: {
+    type: Number,
+    default: 0
+  },
+  star: {
+    type: Number,
+    required: false,
+    enum:[1,2,3,4,5]
   }
 }, {
     timestamps: true

@@ -29,6 +29,8 @@ function MyGigs() {
     mutation.mutate(id);
   }
 
+  const date = new Date()
+
   return (
     <div className="myGigs">
       {isLoading ? "Loading" : error ? "Something went wrong" : (
@@ -37,30 +39,26 @@ function MyGigs() {
             <h1>Gigs</h1>
             {currentUser.isSeller && (
               <Link to="/add">
-                <button>Add New Gig</button>
+                <button>Add New job posting</button>
               </Link>
             )}
           </div>
           <table>
             <tr>
-              <th>Image</th>
               <th>Title</th>
+              <th>BidLastDate</th>
+              <th>Total bids</th>
+              <th>Category</th>
               <th>Price</th>
-              <th>Sales</th>
               <th>Action</th>
             </tr>
             {data.map(gig => (
               <tr key={gig._id}>
-                <td>
-                  <img
-                    className="image"
-                    src={gig.cover}
-                    alt=""
-                  />
-                </td>
                 <td>{gig.title}</td>
+                <td>{new Date(gig?.bidLastDate)?.toLocaleString("en-US", {timeZone: "PST"})}</td>
+                <td>{gig.bids.length}</td>
+                <td>{gig.cat}</td>
                 <td>{gig.price}</td>
-                <td>{gig.sales}</td>
                 <td>
                   <img 
                     className="delete" 

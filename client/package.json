@@ -15,9 +15,13 @@
     "axios": "^1.7.2",
     "infinite-react-carousel": "^1.2.11",
     "moment": "^2.29.4",
+    "multiselect-react-dropdown": "^2.0.25",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.0",
+    "react-select": "^5.8.0",
+    "react-select-country-list": "^2.2.3",
+    "react-spinners": "^0.13.8",
     "sass": "^1.58.0"
   },
   "devDependencies": {

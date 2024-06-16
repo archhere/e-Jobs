@@ -1,8 +1,13 @@
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import "./Register.scss";
 import upload from "../../utils/upload";
 import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
+import Multiselect from 'multiselect-react-dropdown';
+import Select from 'react-select'
+import countryList from 'react-select-country-list'
+import { WEB_DESIGN , TECHNICAL_WRITING, EXCEL, CREATIVE_WRITING, FULL_STACK_WEB_DEVELOPMENT, PHOTOGRAPHY } from "../../utils/constants";
+
 
 function Register() {
   const [file, setFile] = useState(null);
@@ -13,8 +18,22 @@ function Register() {
     img: "",
     country: "",
     isSeller: false,
-    desc: ""
+    desc: "",
+    cat: "",
+    skills: []
   });
+  const countryOptions = useMemo(() => countryList().getData(), []);
+  const [country, setCountry] = useState('')
+  const options = [
+    { label: WEB_DESIGN, value: WEB_DESIGN},
+    { label: TECHNICAL_WRITING, value: TECHNICAL_WRITING},
+    { label: EXCEL, value: EXCEL},
+    { label: CREATIVE_WRITING, value: CREATIVE_WRITING},
+    { label: FULL_STACK_WEB_DEVELOPMENT, value: FULL_STACK_WEB_DEVELOPMENT},
+    { label: PHOTOGRAPHY, value: PHOTOGRAPHY},
+  ];
+
+  const [selectedskills, setSelectedskills] = useState([]);
 
   const navigate = useNavigate();
 
@@ -24,25 +43,46 @@ function Register() {
     })
   }
 
+  const handleDeletion = (e) => {
+    setSelectedskills(() => {
+      return [...e];
+    })
+  }
+
   const handleSeller = e => {
     setUser(prev => {
       return {...prev, isSeller: e.target.checked};
     })
   }
 
+  const updateSkills = () => {
+    console.log(selectedskills)
+    const arr = [];
+    selectedskills.forEach((skill) => {
+      arr.push(skill.value);
+    })
+    return arr;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = await upload(file);
+    const body = {
+      ...user,
+        img: url,
+        country: country.label,
+        skills: updateSkills()
+    }
+    console.log(body)
     try{
-      await newRequest.post("auth/register", {
-        ...user,
-        img: url
-      })
+      await newRequest.post("auth/register", body)
       navigate("/");
     } catch(err) {
       console.log(err)
     }
   }
+
+  console.log(selectedskills)
 
   return (
     <div className="register">
@@ -52,19 +92,21 @@ function Register() {
           <label htmlFor="">Username</label>
           <input name="username" type="text" placeholder="name" onChange={handleChange}/>
           <label htmlFor="">Email</label>
-          <input name="email" type="text" placeholder="email" onChange={handleChange}/>
+          <input name="email" type="email" placeholder="email" onChange={handleChange}/>
           <label htmlFor="">Password</label>
           <input name="password" type="password" onChange={handleChange}/>
           <label htmlFor="">Profile Picture</label>
           <input type="file" onChange={e=>setFile(e.target.files[0])}/>
-          <label htmlFor="">Country</label>
-          <input name="country" type="text" placeholder="US" onChange={handleChange}/>
+          <div className="countrySelector">
+            <label className="countryLabel" htmlFor="">Country</label>
+            <Select options={countryOptions} value={country} onChange={setCountry} />
+          </div>
           <button type="submit">Register</button>
         </div>
         <div className="right">
-        <h1>I want to become a seller</h1>
+        <h1>I want to become a job poster</h1>
           <div className="toggle">
-            <label htmlFor="">Activate the seller account</label>
+            <label htmlFor="">Activate the job poster account</label>
             <label className="switch">
               <input type="checkbox" onChange={handleSeller} />
               <span className="slider round"></span>
@@ -86,6 +128,20 @@ function Register() {
             rows="10"
             onChange={handleChange}
           ></textarea>
+          {!user?.isSeller && (
+            <div className="multiSelect">
+              <label htmlFor="">Skill Categories</label>
+              <Multiselect
+                name="selectedSkills"
+                options={options} 
+                selectedValues={selectedskills} 
+                onSelect={setSelectedskills} 
+                onRemove={handleDeletion} 
+                displayValue="label" 
+                placeholder=""
+              />
+          </div>
+          )}
         </div>
       </form>
     </div>

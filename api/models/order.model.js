@@ -6,10 +6,6 @@ const OrderSchema = new Schema({
         type: String,
         required: true,
       },
-      img: {
-        type: String,
-        required: false,
-      },
       title: {
         type: String,
         required: true,

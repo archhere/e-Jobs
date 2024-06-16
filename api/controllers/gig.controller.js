@@ -1,7 +1,8 @@
 import { createError } from "../utils/helper.js";
 import { 
     ERROR_GIG_CREATE_ONLY_SELLERS, GIG_ALREADY_DELETED, ERROR_DELETE_NOT_OWN_GIG, 
-    DELETED, ERROR_GIG_NOT_FOUND
+    DELETED, ERROR_GIG_NOT_FOUND, ERROR_CANNOT_EDIT_NOTOWNED_GIG, ERROR_CANNOT_BID, 
+    ERROR_CANNOT_TWICE
 } from "../utils/constants.js";
 import Gig from "../models/gig.model.js";
 import get from "lodash.get";
@@ -20,6 +21,44 @@ export const createGig = async (req, res, next) => {
         next(err);
     }
 }
+
+
+export const updateGig = async (req, res, next) => {
+    try {
+        const { params: { id } } = req;
+        const {query: { isBid }} = req;
+        const { body: { userId } } = req; //user here can be bidder or poster
+        const gig = await Gig.findById(id);
+        if (!gig) return next(createError(403, ERROR_GIG_NOT_FOUND));
+        if (Date(gig.projectDeliveryDate) > Date.now()) return next(createError(500, ERROR_CANNOT_EDIT_EXPIRED));
+        console.log("adadhad", gig)
+        let updatedGig;
+
+        if (isBid) { //only bidder flow
+            if (gig.userId === userId) return next(createError(403, ERROR_CANNOT_BID));
+            if (Date(gig.bidLastDate) > Date.now() && isBid) return next(createError(500, ERROR_CANNOT_BID_EXPIRED));
+            const { bids } = gig;
+            if (bids.includes(userId)) return next(createError(403, ERROR_CANNOT_TWICE));
+            updatedGig = await Gig.findByIdAndUpdate({_id: id}, 
+                { '$push': { 'bids': userId } }
+            );
+        } else { //only poster flow
+            if (gig.userId !== userId) return next(createError(403, ERROR_CANNOT_EDIT_NOTOWNED_GIG));
+            updatedGig = await Gig.findByIdAndUpdate({id}, 
+                {
+                    $set: {
+                    ...body 
+                    }
+                },
+                {new: true}
+            );
+        }
+        res.status(200).send(updatedGig);
+    } catch(err) {
+        next(err);
+    }
+}
+
 
 export const deleteGig = async (req, res, next) => {
     try {

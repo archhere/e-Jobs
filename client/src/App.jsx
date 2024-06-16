@@ -15,6 +15,7 @@ import Message from "./pages/message/Message";
 import MyGigs from "./pages/myGigs/MyGigs";
 import Pay from "./pages/pay/Pay";
 import Success from "./pages/success/Success";
+import Profile from "./pages/profile/Profile";
 import {
   QueryClient,
   QueryClientProvider,
@@ -70,6 +71,10 @@ function App() {
         {
           path: "/gig/:id",
           element: <Gig />,
+        },
+        {
+          path: "/profile/:id/:userId",
+          element: <Profile />,
         },
       ],
     },

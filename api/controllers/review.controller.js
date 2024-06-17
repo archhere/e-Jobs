@@ -1,37 +1,41 @@
 import Review from "../models/review.model.js";
 import Gig from "../models/gig.model.js";
 import { createError } from "../utils/helper.js";
+import User from "../models/user.model.js";
 import { ERROR_SELLERS_CANT_CREATE_REVIEW, ERROR_ALREADY_REVIEWED } from "../utils/constants.js"
 
 
 export const createReview = async (req, res, next) => {
+    const reviewerId = req?.userId;
+    const revieweeId = req?.body?.userId;
+    const star = req?.body?.star;
     try {
-        const {isSeller, userId, body: {desc, star, gigId}} = req;
-        if (isSeller) return next(createError(403,  ERROR_SELLERS_CANT_CREATE_REVIEW));
         const newReview = new Review({
-            userId,
-            gigId,
-            desc,
+            reviewerId,
+            revieweeId,
+            desc: req.body.desc ,
             star
-        })
+        });
         const review = await Review.findOne({
-            gigId, userId
-        })
+            reviewerId, revieweeId
+        });
         if (review) return next(createError(404, ERROR_ALREADY_REVIEWED));
         const savedReview = await newReview.save();
 
-        await Gig.findByIdAndUpdate(gigId, {$inc: {totalStars: star, starNumber: 1}})
+        await User.findByIdAndUpdate(revieweeId, {$inc: {totalStars: star, starNumber: 1}})
+
         res.status(201).send(savedReview);
         
     } catch (error) {
+        console.log("aafaf", error)
         next(error);
     }
 }
 
 export const getReviews = async (req, res, next) => {
     try {
-        const {params: { gigId }} = req;
-        const reviews = await Review.find({gigId})
+        const {params: { userId }} = req;
+        const reviews = await Review.find({revieweeId: userId})
         res.status(200).send(reviews);
     } catch(err) {
         next(error);

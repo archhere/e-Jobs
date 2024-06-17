@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
+import { OPEN_BID, WIP, READY_FOR_REVIEW, APPROVED, COMPLETED, PAID } from '../utils/constants.js';
 
 const GigSchema = new Schema({
     userId: {
@@ -41,6 +42,16 @@ const GigSchema = new Schema({
     bidder: {
         type: String,
         default: ""
+    },
+    status: {
+        type: String,
+        required: false,
+        default: OPEN_BID,
+        enum:[OPEN_BID, WIP, READY_FOR_REVIEW, APPROVED, PAID, COMPLETED]
+    },
+    payment_intent: {
+        type: String,
+        required: false,
     }
 }, {
     timestamps: true

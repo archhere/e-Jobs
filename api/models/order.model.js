@@ -14,11 +14,11 @@ const OrderSchema = new Schema({
         type: Number,
         required: true,
       },
-      sellerId: {
+      posterId: {
         type: String,
         required: true,
       },
-      buyerId: {
+      bidderId: {
         type: String,
         required: true,
       },

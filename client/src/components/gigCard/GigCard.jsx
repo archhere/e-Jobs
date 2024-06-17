@@ -3,6 +3,9 @@ import "./GigCard.scss";
 import { Link } from "react-router-dom";
 import newRequest from "../../utils/newRequest";
 import { useQuery } from "@tanstack/react-query";
+import { 
+  LOADING, ERROR_GENERIC
+} from "../../utils/constants";
 
 const GigCard = ({ item }) => {
 const { isLoading, error, data } = useQuery({
@@ -20,9 +23,9 @@ const stars = item.totalStars / item.starNumber;
         <img src={item.cover} alt="" />
         <div className="info">
           {isLoading ? (
-            "loading"
+            LOADING
           ) : error ? (
-            "Something went wrong!"
+            ERROR_GENERIC
           ) : (
           <div className="user">
             <img src={data.img || "/img/noavatar.jpg"} alt="" />
@@ -37,12 +40,10 @@ const stars = item.totalStars / item.starNumber;
         </div>
         <hr />
         <div className="detail">
-          <img src="./img/heart.png" alt="" />
           <div className="price">
-            <span>STARTING AT</span>
+            <span>EARN UPTO</span>
             <h2>
               $ {item.price}
-              <sup>99</sup>
             </h2>
           </div>
         </div>

@@ -2,11 +2,11 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const ReviewSchema = new Schema({
-    gigId: {
+      reviewerId: {
         type: String,
         required: true,
       },
-      userId: {
+      revieweeId: {
         type: String,
         required: true,
       },

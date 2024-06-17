@@ -5,7 +5,7 @@ import { register, login, logout, updateProfile } from "../controllers/auth.cont
 const router = express.Router();
 
 router.post("/register", register);
-router.put("/update", updateProfile)
+router.put("/update/:id", updateProfile)
 router.post("/login", login);
 router.post("/logout", logout);
 

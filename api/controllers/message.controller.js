@@ -33,6 +33,7 @@ export const createMessage = async (req, res, next) => {
 export const getMessages = async (req, res, next) => {
     try {
         const { params: { id } } = req;
+        console.log("adahgdhad", id)
         const messages = await Message.find({conversationId: id})
         res.status(200).send(messages);
     } catch(err){

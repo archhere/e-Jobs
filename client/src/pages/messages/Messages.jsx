@@ -30,7 +30,6 @@ const Messages = () => {
   }
 
 
-
   return (
     <div className="messages">
       {isLoading ? "Loading" : error ? "Something happened" : (
@@ -40,7 +39,7 @@ const Messages = () => {
           </div>
           <table>
             <tr>
-              <th>{currentUser.isSeller ? "Buyer" : "Seller"}</th>
+              <th>Conversation with</th>
               <th>Last Message</th>
               <th>Date</th>
               <th>Action</th>
@@ -48,20 +47,20 @@ const Messages = () => {
             {data.map((c)=> (
               <tr 
                 className={
-                  ((currentUser.isSeller && !c.readBySeller) || (!currentUser.isSeller && !c.readByBuyer)) &&
+                  ((currentUser._id === c.user1 && !c.readByUser1) || (currentUser._id === c.user2 && !c.readByUser2)) &&
                   "active"
                 }
                 key={c.id}
               >
-                <td>{currentUser.isSeller ? c.buyerId : c.sellerId}</td>
+                <td>{currentUser._id === c.user1 ? c.user2 : c.user1}</td>
                 <td>
-                  <Link to={`/message/${c.id}`} className="link">
+                  <Link to={`/message/${c._id}/${currentUser._id === c.user1 ? c.user2 : c.user1}`} className="link">
                     {c?.lastMessage?.substring(0, 100)}...
                   </Link>
                 </td>
                 <td>{moment(c.updatedAt).fromNow()}</td>
                 <td>{
-                    ((currentUser.isSeller && !c.readBySeller) || (!currentUser.isSeller && !c.readByBuyer)) &&
+                    ((currentUser._id === c.user1 && !c.readByUser1) || (currentUser._id === c.user2 && !c.readByUser2)) &&
                     (<button onClick={() => handleRead(c.id)}>Mark as Read</button>)
                   }
                 </td>

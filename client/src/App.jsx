@@ -61,7 +61,7 @@ function App() {
           element: <Messages />,
         },
         {
-          path: "/message/:id",
+          path: "/message/:id/:userId",
           element: <Message />,
         },
         {
@@ -73,7 +73,7 @@ function App() {
           element: <Gig />,
         },
         {
-          path: "/profile/:id/:userId",
+          path: "/profile/:userId",
           element: <Profile />,
         },
       ],

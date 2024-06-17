@@ -1,21 +1,34 @@
-import React from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useParams, useLocation } from "react-router-dom";
 import "./Message.scss";
 import newRequest from "../../utils/newRequest";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { 
+  LOADING, ERROR_GENERIC
+} from "../../utils/constants";
+
 
 const Message = () => {
 
-  const { id } = useParams();
+  const { id, userId } = useParams();
   const queryClient = useQueryClient();
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-  const { isLoading, error, data } = useQuery({
+  const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["messages"],
     queryFn: () => 
       newRequest.get(`/messages/${id}`).then((res) => {
         return res.data;
       })
+  });
+
+  const { isLoading: isLoadingUser, error: errorUser, data: dataUser } = useQuery ({
+    queryKey: ["user"],
+    queryFn: () => 
+      newRequest.get(`users/${userId}`).then((res) => {
+        return res.data;
+      }),
+    enabled: !!userId  
   });
 
   const mutation = useMutation({
@@ -25,7 +38,15 @@ const Message = () => {
     onSuccess: () => {
         queryClient.invalidateQueries(["messages"])
     }
-})  
+  })  
+
+  useEffect(() => {
+    refetch();
+  }, [])
+
+// const apply = ()=>{
+//   refetch();
+// }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,14 +63,11 @@ const Message = () => {
         <span className="breadcrumbs">
           <Link to="/messages">Messages</Link> > John Doe >
         </span>
-        {isLoading ? "Loading" : error ? "Something went wrong" : (
+        {(isLoading || isLoadingUser) ? LOADING : (error || errorUser) ? ERROR_GENERIC : (
           <div className="messages">
             {data.map((m) => (
               <div className={m.userId === currentUser._id ? "owner item" : "item"}  key={m._id}>
-                <img
-                  src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                  alt=""
-                />
+                {m.userId === currentUser._id ? currentUser?.username : dataUser?.username}
                 <p>
                   {m.desc}
                 </p>

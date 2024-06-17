@@ -10,6 +10,7 @@ export const INITIAL_STATE = {
     desc: "",
     cat: "",
     skills: [],
+    cat: []
   };
 
   export const profileReducer = (state,action) => {

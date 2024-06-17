@@ -43,7 +43,7 @@ export const getOrders = async (req, res, next) => {
 
 export const intent = async (req, res, next) => {
     try {
-        const { params: {id }, userId } = req;
+        const { params: {id } } = req;
         const stripe = new Stripe(process.env.STRIPE);
         const gig = await Gig.findById(id);
         const paymentIntent = await stripe.paymentIntents.create({
@@ -53,16 +53,11 @@ export const intent = async (req, res, next) => {
                 enabled: true,
               },
         });
-
-        if (userId === gig.userId) {
-            return next(createError(403,  ERROR_CANNOT_ORDER_OWN_GIG));
-        }
         const newOrder = new Order({
             gigId: gig._id,
-            img: gig.cover,
             title: gig.title,
-            buyerId: userId,
-            sellerId: gig.userId,
+            bidderId: gig.bidder,
+            posterId: gig.userId,
             price: gig.price,
             payment_intent: paymentIntent.id
         });

@@ -5,6 +5,10 @@ import { CHANGE_INPUT, ADD_FEATURE, REMOVE_FEATURE} from "../../utils/constants"
 import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { 
+  GRAPHICS_AND_DESIGN, VIDEO_AND_ANIMATION, LIFESTYLE, WRITING_AND_TRANSLATION,
+  DIGITAL_MARKETING, MUSIC_AND_AUDIO, PROGRAMMING_AND_TECH, BUSINESS, AI_SERVICES
+} from "../../utils/constants";
 
 const Add = () => {
   const [state, dispatch] = useReducer(gigReducer, INITIAL_STATE);
@@ -57,10 +61,15 @@ const Add = () => {
             />
             <label htmlFor="">Category</label>
             <select name="cat" id="cat" onChange={handleChange}>
-              <option value="design">Design</option>
-              <option value="web">Web Development</option>
-              <option value="animation">Animation</option>
-              <option value="music">Music</option>
+              <option value={GRAPHICS_AND_DESIGN}>{GRAPHICS_AND_DESIGN}</option>
+              <option value={VIDEO_AND_ANIMATION}>{VIDEO_AND_ANIMATION}</option>
+              <option value={LIFESTYLE}>{LIFESTYLE}</option>
+              <option value={WRITING_AND_TRANSLATION}>{WRITING_AND_TRANSLATION}</option>
+              <option value={DIGITAL_MARKETING}>{DIGITAL_MARKETING}</option>
+              <option value={MUSIC_AND_AUDIO}>{MUSIC_AND_AUDIO}</option>
+              <option value={PROGRAMMING_AND_TECH}>{PROGRAMMING_AND_TECH}</option>
+              <option value={BUSINESS}>{BUSINESS}</option>
+              <option value={AI_SERVICES}>{AI_SERVICES}</option>
             </select>
             <label htmlFor="">Description</label>
             <textarea 

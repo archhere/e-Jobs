@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Multiselect from 'multiselect-react-dropdown';
 import Select from 'react-select'
 import countryList from 'react-select-country-list'
-import { WEB_DESIGN , TECHNICAL_WRITING, EXCEL, CREATIVE_WRITING, FULL_STACK_WEB_DEVELOPMENT, PHOTOGRAPHY } from "../../utils/constants";
+import { SKILL_OPTIONS } from "../../utils/constants";
 
 
 function Register() {
@@ -19,20 +19,11 @@ function Register() {
     country: "",
     isSeller: false,
     desc: "",
-    cat: "",
+    cat: [],
     skills: []
   });
   const countryOptions = useMemo(() => countryList().getData(), []);
   const [country, setCountry] = useState('')
-  const options = [
-    { label: WEB_DESIGN, value: WEB_DESIGN},
-    { label: TECHNICAL_WRITING, value: TECHNICAL_WRITING},
-    { label: EXCEL, value: EXCEL},
-    { label: CREATIVE_WRITING, value: CREATIVE_WRITING},
-    { label: FULL_STACK_WEB_DEVELOPMENT, value: FULL_STACK_WEB_DEVELOPMENT},
-    { label: PHOTOGRAPHY, value: PHOTOGRAPHY},
-  ];
-
   const [selectedskills, setSelectedskills] = useState([]);
 
   const navigate = useNavigate();
@@ -133,7 +124,7 @@ function Register() {
               <label htmlFor="">Skill Categories</label>
               <Multiselect
                 name="selectedSkills"
-                options={options} 
+                options={SKILL_OPTIONS} 
                 selectedValues={selectedskills} 
                 onSelect={setSelectedskills} 
                 onRemove={handleDeletion} 

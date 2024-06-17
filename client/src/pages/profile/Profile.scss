@@ -1,4 +1,4 @@
-.gig {
+.profile {
     display: flex;
     justify-content: center;
 
@@ -16,7 +16,7 @@
       width: 1400px;
       padding: 30px 0px;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       gap: 50px;
   
       .left {
@@ -41,6 +41,7 @@
     
               img{
                 width: 14px;
+                height: 14px;
               }
             }
           }
@@ -61,6 +62,30 @@
               display: flex;
               align-items: center;
               gap: 20px;
+              button {
+                background-color: #1dbf73;
+                color: white;
+                font-weight: 500;
+                border: none;
+               padding: 10px;
+                cursor: pointer;
+            }
+            }
+            img {
+              width: 100px;
+              height: 100px;
+              border-radius: 50%;
+              object-fit: cover;
+            }
+            .info{
+              button {
+                background-color: white;
+                border-radius: 5px;
+                border: 1px solid gray;
+                padding: 10px;
+                margin-left: 10px;
+                color: black;
+              }
             }
         }
 

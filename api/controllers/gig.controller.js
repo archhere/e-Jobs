@@ -2,10 +2,15 @@ import { createError } from "../utils/helper.js";
 import { 
     ERROR_GIG_CREATE_ONLY_SELLERS, GIG_ALREADY_DELETED, ERROR_DELETE_NOT_OWN_GIG, 
     DELETED, ERROR_GIG_NOT_FOUND, ERROR_CANNOT_EDIT_NOTOWNED_GIG, ERROR_CANNOT_BID, 
-    ERROR_CANNOT_TWICE
+    ERROR_CANNOT_TWICE,
+    WIP,
+    READY_FOR_REVIEW,
+    PAID,
+    COMPLETED
 } from "../utils/constants.js";
 import Gig from "../models/gig.model.js";
 import get from "lodash.get";
+import Stripe from "stripe";
 
 export const createGig = async (req, res, next) => {
     try {
@@ -25,16 +30,13 @@ export const createGig = async (req, res, next) => {
 
 export const updateGig = async (req, res, next) => {
     try {
-        const { params: { id } } = req;
-        const {query: { isBid }} = req;
-        const { body: { userId } } = req; //user here can be bidder or poster
+        const {params: { id }, query: { isBid }, userId } = req;
         const gig = await Gig.findById(id);
         if (!gig) return next(createError(403, ERROR_GIG_NOT_FOUND));
         if (Date(gig.projectDeliveryDate) > Date.now()) return next(createError(500, ERROR_CANNOT_EDIT_EXPIRED));
-        console.log("adadhad", gig)
         let updatedGig;
 
-        if (isBid) { //only bidder flow
+        if (isBid?.trim()?.toLowerCase() === "true") { //only bidder flow
             if (gig.userId === userId) return next(createError(403, ERROR_CANNOT_BID));
             if (Date(gig.bidLastDate) > Date.now() && isBid) return next(createError(500, ERROR_CANNOT_BID_EXPIRED));
             const { bids } = gig;
@@ -42,13 +44,14 @@ export const updateGig = async (req, res, next) => {
             updatedGig = await Gig.findByIdAndUpdate({_id: id}, 
                 { '$push': { 'bids': userId } }
             );
-        } else { //only poster flow
-            if (gig.userId !== userId) return next(createError(403, ERROR_CANNOT_EDIT_NOTOWNED_GIG));
-            updatedGig = await Gig.findByIdAndUpdate({id}, 
+        } else { //only poster flow unless bidder is changing status
+            const { body: { status } } = req;
+            if (!(status == READY_FOR_REVIEW || status == COMPLETED) && gig.userId !== userId) return next(createError(403, ERROR_CANNOT_EDIT_NOTOWNED_GIG));
+            updatedGig = await Gig.findByIdAndUpdate({_id: id}, 
                 {
                     $set: {
-                    ...body 
-                    }
+                        ...req.body 
+                     }
                 },
                 {new: true}
             );
@@ -59,6 +62,48 @@ export const updateGig = async (req, res, next) => {
     }
 }
 
+export const intent = async (req, res, next) => {
+    try {
+        const { params: {id } } = req;
+        const stripe = new Stripe(process.env.STRIPE);
+        const gig = await Gig.findById(id);
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: gig.price * 100,
+            currency: 'usd',
+            automatic_payment_methods: {
+                enabled: true,
+              },
+        });
+        const updatedGig = await Gig.findByIdAndUpdate({_id: id}, 
+            {
+                $set: { payment_intent: paymentIntent.id}
+            },
+            {new: true}
+        );
+        res.status(200).send({clientSecret: paymentIntent.client_secret});
+    } catch(err){
+        console.log(err)
+        next(err);
+    }
+}
+
+export const confirm = async (req, res, next) => {
+    try {
+        const { body: { payment_intent } } = req;
+        const orders = await Gig.findByIdAndUpdate(
+            {
+                payment_intent
+            }, 
+            {
+                $set: {status: PAID}
+            }
+        );
+        res.status(200).send(ORDER_CONFIRMED);
+
+    } catch(err){
+        next(err);
+    }
+}
 
 export const deleteGig = async (req, res, next) => {
     try {
@@ -92,10 +137,12 @@ export const getGig = async (req, res, next) => {
 }
 
 export const getGigs = async (req, res, next) => {
-    const {query: {userId, cat, min, max, search, sort}} = req;
+    const {query: {userId, cat, min, max, search, sort, bidder, status}} = req;
     // Using spread operator to 
     const filters = {
         ...(userId && { userId }),
+        ...(bidder && { bidder }),
+        ...(status && { status }),
         ...(cat && { cat }),
         ...(( min || max) && {
         price: {

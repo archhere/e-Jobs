@@ -40,6 +40,10 @@ const userSchema = new Schema({
       type: [String],
       required: false
   },
+  cat: {
+    type: [String],
+    required: false
+},
   sales: {
     type: Number,
     default: 0
@@ -47,8 +51,13 @@ const userSchema = new Schema({
   star: {
     type: Number,
     required: false,
+    default: 1,
     enum:[1,2,3,4,5]
-  }
+  },
+  totalStars: {
+    type: Number,
+    default: 0
+}
 }, {
     timestamps: true
 });

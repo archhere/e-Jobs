@@ -24,4 +24,10 @@ export const USER_CREATED = "User created successfully";
 export const ACCESS_TOKEN = "accessToken";
 export const LOGGED_OUT_SUCCESS = "User has been logged out";
 export const ORDER_CONFIRMED = "Order has been confirmed";
+export const OPEN_BID = "Open for bid";
+export const WIP = "Work in Progress";
+export const READY_FOR_REVIEW = "Ready for review";
+export const APPROVED = "Approved";
+export const PAID = "Paid";
+export const COMPLETED = "Completed";
 

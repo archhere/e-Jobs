@@ -1,5 +1,9 @@
 import React from "react";
 import "./Footer.scss";
+import { 
+  GRAPHICS_AND_DESIGN, VIDEO_AND_ANIMATION, LIFESTYLE, WRITING_AND_TRANSLATION,
+  DIGITAL_MARKETING, MUSIC_AND_AUDIO, PROGRAMMING_AND_TECH, BUSINESS, AI_SERVICES
+} from "../../utils/constants";
 
 function Footer() {
   return (
@@ -8,21 +12,21 @@ function Footer() {
         <div className="top">
           <div className="item">
             <h2>Categories</h2>
-            <span>Graphics & Design</span>
-            <span>Digital Marketing</span>
-            <span>Writing & Translation</span>
+            <span>{GRAPHICS_AND_DESIGN}</span>
+            <span>{DIGITAL_MARKETING}</span>
+            <span>{WRITING_AND_TRANSLATION}</span>
           </div>
           <div className="item">
             <h2>Categories</h2>
-            <span>Video & Animation</span>
-            <span>Music & Audio</span>
-            <span>Programming & Tech</span>
+            <span>{VIDEO_AND_ANIMATION}</span>
+            <span>{MUSIC_AND_AUDIO}</span>
+            <span>{PROGRAMMING_AND_TECH}</span>
           </div>
           <div className="item">
             <h2>Categories</h2>
-            <span>Data</span>
-            <span>Business</span>
-            <span>Lifestyle</span>
+            <span>{AI_SERVICES}</span>
+            <span>{BUSINESS}</span>
+            <span>{LIFESTYLE}</span>
           </div>
           <div className="item">
             <h2>Categories</h2>
@@ -33,8 +37,8 @@ function Footer() {
             <h2>Support</h2>
             <span>Help & Support</span>
             <span>Trust & Safety</span>
-            <span>Selling on Ejobs</span>
-            <span>Buying on Ejobs</span>
+            <span>Posting on Ejobs</span>
+            <span>Bidding on Ejobs</span>
           </div>
         </div>
         <hr />

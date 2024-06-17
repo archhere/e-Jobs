@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.scss";
 import newRequest from "../../utils/newRequest";
+import { 
+  GRAPHICS_AND_DESIGN, VIDEO_AND_ANIMATION, LIFESTYLE, WRITING_AND_TRANSLATION,
+  DIGITAL_MARKETING, MUSIC_AND_AUDIO, PROGRAMMING_AND_TECH, BUSINESS, AI_SERVICES
+} from "../../utils/constants";
+import getCurrentUser from "../../utils/getCurrentUser";
 
 function Navbar() {
   const [active, setActive] = useState(false);
@@ -47,7 +52,7 @@ function Navbar() {
           <span>Ejobs Business</span>
           <span>Explore</span>
           <span>English</span>
-          {!currentUser?.isSeller && <span>Become a Seller</span>}
+          {!currentUser?.isSeller && <span>Become a Job Poster</span>}
           {currentUser ? (
             <div className="user" onClick={()=>setOpen(!open)}>
               <img
@@ -59,15 +64,18 @@ function Navbar() {
                 {currentUser.isSeller && (
                   <>
                     <Link className="link" to="/mygigs">
-                      Gigs
+                      My Job Postings
                     </Link>
                     <Link className="link" to="/add">
                       Add job posting
                     </Link>
                   </>
                 )}
+                <Link className="link" to={`/profile/${getCurrentUser()._id}`}>
+                  My Profile
+                </Link>
                 <Link className="link" to="/orders">
-                  Orders
+                  My Bids
                 </Link>
                 <Link className="link" to="/messages">
                   Messages
@@ -92,31 +100,31 @@ function Navbar() {
           <hr />
           <div className="menu">
             <Link className="link menuLink" to="/">
-              Graphics & Design
+              {GRAPHICS_AND_DESIGN}
             </Link>
             <Link className="link menuLink" to="/">
-              Video & Animation
+              {VIDEO_AND_ANIMATION}
             </Link>
             <Link className="link menuLink" to="/">
-              Writing & Translation
+              {WRITING_AND_TRANSLATION}
             </Link>
             <Link className="link menuLink" to="/">
-              AI Services
+              {AI_SERVICES}
             </Link>
             <Link className="link menuLink" to="/">
-              Digital Marketing
+              {DIGITAL_MARKETING}
             </Link>
             <Link className="link menuLink" to="/">
-              Music & Audio
+              {MUSIC_AND_AUDIO}
             </Link>
             <Link className="link menuLink" to="/">
-              Programming & Tech
+              {PROGRAMMING_AND_TECH}
             </Link>
             <Link className="link menuLink" to="/">
-              Business
+              {BUSINESS}
             </Link>
             <Link className="link menuLink" to="/">
-              Lifestyle
+              {LIFESTYLE}
             </Link>
           </div>
           <hr />

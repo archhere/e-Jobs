@@ -1,7 +1,7 @@
 import getCurrentUser from "../../utils/getCurrentUser";
 import "./Profile.scss";
 import React  from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Reviews from "../../components/reviews/Reviews";
 import { useMutation, useQuery , useQueryClient } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
@@ -9,11 +9,13 @@ import newRequest from "../../utils/newRequest";
 
 function Profile() {
     const params = useParams();
-    const { id, userId } = params;
+    const { userId } = params;
     const selfProfile = userId === getCurrentUser()._id;
     let isLoadingUser = false;
     let errorUser = false;
     let user;
+
+    const navigate = useNavigate();
 
     if (selfProfile) {
        user = getCurrentUser();
@@ -28,26 +30,33 @@ function Profile() {
         }));
     }
 
-    const editProfile = () => {
-        return (
-            <div className="info">
-                <span>{user.username}</span>
-                <button>Edit Profile</button>
-            </div> 
-        )
-    }
-
     const contactMe = () => {
         return (
             <div className="info">
                 <span>{user.username}</span>
-                <button>Contact Me</button>
+                <button onClick={handleContact}>Contact Me</button>
             </div> 
         )
     }
 
+    const handleContact = async () => {
+        const contactFrom = getCurrentUser()?._id;
+        const contactTo = userId;
+        try {
+          const res = await newRequest.get(`conversations/single/${contactFrom}/${contactTo}`);
+          
+          navigate(`/message/${res.data.conversationId}/${data?._id}`);
+        } catch(error) {
+          if(error.response.status === 404) {
+            const res = await newRequest.post(`/conversations/`, {user1: contactFrom, user2: contactTo});
+            console.log("aadghadg", res)
+            navigate(`/message/${res.data.conversationId}/${data?._id})`);
+          }
+        }
+      }
+
     return (
-        <div className="gig">
+        <div className="profile">
             {isLoadingUser ? "Loading" : errorUser ? "Something went wrong" : (
                 <div className="container">
                     <div className="left">
@@ -59,7 +68,7 @@ function Profile() {
                                         src={user.img || "/img/noavatar.jpg"}
                                         alt=""
                                     />
-                                   {selfProfile ? editProfile() : contactMe()}
+                                   {selfProfile  ? "" :  contactMe()}
                                 </div>
                                 <div className="features">
                                     {user.skills.map((feature) => (
@@ -74,7 +83,7 @@ function Profile() {
                                     {user.desc}
                                 </p>
                             </div>
-                            {!selfProfile && <Reviews gigId={id}/>}
+                            {<Reviews userId={userId} selfProfile/>}
                         </div>
                     </div>
                 </div>

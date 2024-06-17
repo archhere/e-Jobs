@@ -4,11 +4,19 @@ import newRequest from "../../utils/newRequest";
 import { useParams, Link } from "react-router-dom";
 import getCurrentUser from "../../utils/getCurrentUser";
 import { useMutation, useQuery , useQueryClient } from "@tanstack/react-query";
+import Bids from "../../components/bids/Bids";
+import { 
+  LOADING, ERROR_GENERIC, OPEN_BID, WIP, READY_FOR_REVIEW, APPROVED, COMPLETED, STEPPER, PAID
+} from "../../utils/constants";
+import Stepper from 'react-stepper-horizontal';
+import { useNavigate } from "react-router-dom";
+
 
 function Gig() {
 
   const params = useParams();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { id } = params;
   const { isLoading, error, data, refetch } = useQuery ({
     queryKey: ["gig"],
@@ -18,7 +26,22 @@ function Gig() {
       })
   });
 
+  const steps = [
+    { title: OPEN_BID },
+    { title: WIP },
+    { title: READY_FOR_REVIEW },
+    { title: APPROVED },
+    { title: PAID },
+    { title: COMPLETED },
+  ];
+  
+
   const userId = data?.userId;
+  const status = data?.status;
+  console.log(status)
+  const isPoster = userId === getCurrentUser()._id;
+  const isBidder = data?.bidder === getCurrentUser()._id;
+  const activeStep = STEPPER[status];
 
   const { isLoading: isLoadingUser, error: errorUser, data: dataUser } = useQuery ({
     queryKey: ["user"],
@@ -31,19 +54,24 @@ function Gig() {
   const {country, desc} = dataUser || {country: "loading", desc: "loading"}; 
   
   const mutation = useMutation({
-    mutationFn: () => {
-        return newRequest.put(`gigs/${id}?isBid=true`, {userId: getCurrentUser()._id})
+    mutationFn: (payload) => {
+        const { isBid, body } = payload;
+        return newRequest.put(`gigs/${id}?isBid=${isBid}`, body)
     },
     onSuccess: () => {
-        queryClient.invalidateQueries(["myBid"])
+        queryClient.invalidateQueries(["myBid", activeStep])
     },
     onError: (err) => {
       console.log(err)
     }
   })  
 
-  const handleSubmit = () => {
-      mutation.mutate();
+  const handleSubmit = (isBid, body) => {
+    mutation.mutate({isBid, body});
+    if (body?.status === APPROVED) {
+      navigate(`/pay/${id}`)
+    }
+    
   }
 
   const dayConverter = (dateToBid) => {
@@ -63,15 +91,21 @@ function Gig() {
   }
 
   const daysToBid = fetchDaystoBid();
+  const daysToComplete = fetchDaystoComplete();
 
   return (
     <div className="gig">
-      {isLoading ? "loading" : error ? "Something went wrong" : 
+      {isLoading ? LOADING : error ? ERROR_GENERIC : 
       <div className="container">
         <div className="left">
           <span className="breadcrumbs">Ejobs {">"} Graphics & Design {">"}</span>
           <h1>{data.title}</h1>
-          {isLoadingUser ? "Loading" : errorUser ? "Something went wrong" : (
+          <div className="stepper">
+                  <Stepper
+                    steps={steps}
+                    activeStep={activeStep}/>
+                </div>
+          {isLoadingUser ? LOADING : errorUser ? ERROR_GENERIC : (
             <div className="seller">
               <div className="box">
               <h2>About the poster</h2>
@@ -122,11 +156,11 @@ function Gig() {
                   </div>
                   <div className="item">
                     <img src="/img/clock.png" alt="" />
-                    <span>{daysToBid} Days Delivery</span>
+                    <span>{(daysToBid > 0  && data.bidder === "") ? `${daysToBid} days to bid` : daysToComplete > 0 ? `${daysToComplete} days to complete` : "Completed"}</span>
                  </div>
                  <div className="item">
                     <span className="title">Job Status</span>
-                    <span className="desc">{daysToBid > 0 ? "Open to bids" : fetchDaystoComplete() > 0 ? "Gig in progress" : "Completed"}</span>
+                    <span className="desc">{(daysToBid > 0  && data.bidder === "")? "Open to bids" : daysToComplete > 0 ? "Gig in progress" : "Completed"}</span>
                   </div>
                   <div className="item">
                     <span className="title">Bids Count</span>
@@ -141,6 +175,9 @@ function Gig() {
             </div>
         
         </div>
+        <div>
+          {isPoster && <Bids bids={data?.bids} gigId={id} bidCompleted={data?.bidder !== ""}/>}
+        </div>
         <div className="right">
           <p>
             Required skills
@@ -153,16 +190,54 @@ function Gig() {
             </div>
             ))}
           </div>
-          {(
-            userId !== getCurrentUser()._id !== userId) && 
+        </div>
+        <div className="new">
+          {!isPoster && status === OPEN_BID && (
             <button
               className="bid" 
               disabled = {data?.bids.includes(getCurrentUser()._id)}
-              onClick={handleSubmit}
+              onClick={() => handleSubmit(true, {})}
             > 
               Bid
             </button>
-          }
+          )}
+          {isBidder && status === WIP && (
+            <div> 
+              <p>
+                Please click on the below button to update current job status
+              </p>
+              <button
+                className="bid" 
+                onClick={() => handleSubmit(false, {status: READY_FOR_REVIEW})}
+              > 
+                {READY_FOR_REVIEW}
+              </button>
+            </div>
+          )}
+          {isPoster && status === READY_FOR_REVIEW && (
+            <button
+              className="bid" 
+              onClick={() => handleSubmit(false, {status: APPROVED})}
+            > 
+              APPROVE
+            </button>
+          )}
+          {isPoster && status === APPROVED && (
+            <button
+              className="bid" 
+              onClick={() => navigate(`/pay/${id}`)}
+            > 
+              PAY NOW
+            </button>
+          )}
+          {isBidder && status === PAID && (
+            <button
+              className="bid" 
+              onClick={() => handleSubmit(false, {status: COMPLETED})}
+            > 
+              COMPLETE TRANSACTION
+            </button>
+          )}
         </div>
       </div>}
     </div>

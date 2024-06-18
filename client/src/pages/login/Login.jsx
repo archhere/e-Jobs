@@ -2,11 +2,12 @@ import React, { useState } from "react"
 import "./Login.scss"
 import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
+import { ERROR_GENERIC } from "../../utils/constants";
+import { toast } from 'react-custom-alert';
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -17,9 +18,12 @@ function Login() {
       localStorage.setItem("currentUser", JSON.stringify(resp.data));
       navigate("/");
     } catch(err) {
-      setError(err.response.data);
+      handleError(err?.response?.data || ERROR_GENERIC)
     }
-    
+  }
+
+  const handleError = (err) => {
+    return toast.error(err, {toastId: err});
   }
 
   return (
@@ -35,8 +39,7 @@ function Login() {
           type="password"
           onChange={e=>{setPassword(e.target.value)}}
         />
-        <button type="submit">Login</button>
-        {error && error}
+        <button disabled = {!username.length || !password.length} type="submit">Login</button>
       </form>
     </div>
   )

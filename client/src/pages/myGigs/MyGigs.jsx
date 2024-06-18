@@ -4,6 +4,7 @@ import "./MyGigs.scss";
 import getCurrentUser from "../../utils/getCurrentUser";
 import newRequest from "../../utils/newRequest";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function MyGigs() {
   const currentUser = getCurrentUser();
@@ -34,7 +35,13 @@ function MyGigs() {
 
   return (
     <div className="myGigs">
-      {isLoading ? "Loading" : error ? "Something went wrong" : (
+      {isLoading ? 
+        <ClipLoader
+          color={"#1dbf73"}
+          size={20}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        /> : error ? "Something went wrong" : (
         <div className="container">
           <div className="title">
             <h1>My job postings</h1>

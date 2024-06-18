@@ -4,19 +4,12 @@ import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 import getCurrentUser from "../../utils/getCurrentUser";
 import { WIP } from "../../utils/constants";
+import {useNavigate } from "react-router-dom";
 
 function Bids({bids, gigId, bidCompleted}) {
 
-  const queryClient = useQueryClient();
-
-    // const { isLoading, error, data } = useQuery ({
-    //     queryKey: ["user"],
-    //     queryFn: () => 
-    //       newRequest.get(`users/${bid}`).then((res) => {
-    //         return res.data;
-    //       }),
-    //     enabled: !!userId  
-    // });
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const combinedQueries = useQueries({
       queries: bids.map((bid) => ({
@@ -67,9 +60,9 @@ function Bids({bids, gigId, bidCompleted}) {
                   </tr>
                   {combinedQueries.data.map(val => (
                     <tr key={val}>
-                        <td>{val.username}</td>
-                        <td>{val.skills.join(" , ")}</td>
-                        <td>{val.star}</td>
+                        <td onClick={() => navigate(`/profile/${val._id}`)}>{val.username}</td>
+                        <td onClick={() => navigate(`/profile/${val._id}`)}>{val.skills.join(" , ")}</td>
+                        <td onClick={() => navigate(`/profile/${val._id}`)}>{val.star}</td>
                         <td>
                         <button
                           className="delete" 

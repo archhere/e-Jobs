@@ -10,6 +10,7 @@ import {
 } from "../../utils/constants";
 import Stepper from 'react-stepper-horizontal';
 import { useNavigate } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
 
 
 function Gig() {
@@ -95,17 +96,28 @@ function Gig() {
 
   return (
     <div className="gig">
-      {isLoading ? LOADING : error ? ERROR_GENERIC : 
+      {isLoading ? 
+      <ClipLoader
+        color={"#1dbf73"}
+        size={20}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />  : error ? ERROR_GENERIC : 
       <div className="container">
         <div className="left">
-          <span className="breadcrumbs">Ejobs {">"} Graphics & Design {">"}</span>
           <h1>{data.title}</h1>
           <div className="stepper">
                   <Stepper
                     steps={steps}
                     activeStep={activeStep}/>
                 </div>
-          {isLoadingUser ? LOADING : errorUser ? ERROR_GENERIC : (
+          {isLoadingUser ? 
+            <ClipLoader
+            color={"#1dbf73"}
+            size={20}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+            />  : errorUser ? ERROR_GENERIC : (
             <div className="seller">
               <div className="box">
               <h2>About the poster</h2>
@@ -176,7 +188,7 @@ function Gig() {
         
         </div>
         <div>
-          {isPoster && <Bids bids={data?.bids} gigId={id} bidCompleted={data?.bidder !== ""}/>}
+          {(isPoster && data?.totalBids > 0) &&  <Bids bids={data?.bids} gigId={id} bidCompleted={data?.bidder !== ""}/>}
         </div>
         <div className="right">
           <p>

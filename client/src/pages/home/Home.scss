@@ -88,14 +88,23 @@
         }
       }
     }
+  }
 
-    //   &.reverse {
-    //     background-color: #0d084d;
-    //     color: white;
-    //     .container {
-    //       flex-direction: row-reverse;
-    //     }
-    //   }
+  .gigContainer {
+      margin-left: 180px;
+      margin-right: 180px;
+      margin-top: 20px;
+     #cards{
+      display: flex;
+      flex-wrap: wrap;
+      padding: 100px 0px;
+     }
+     .topBidHeader{
+      display: flex;
+      font-family: "Roboto", sans-serif;
+      font-weight: 700;
+      color: rgb(85, 85, 85);
+     }
   }
 
   .explore {
@@ -109,6 +118,13 @@
       h1{
         color: #555;
       }
+
+      #cards{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      padding: 100px 0px;
+       }
 
       .items {
         width: 100%;

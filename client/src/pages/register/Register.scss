@@ -1,4 +1,11 @@
-.register {
+.mainContainer {
+  .linkBack{
+    position: absolute;
+    top: 50px;
+    left: 22%
+  }
+  // display: flex;
+  .register {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,6 +48,12 @@
           font-size: 18px;
           background-color: #1dbf73;
           cursor: pointer;
+        }
+
+        button:disabled,
+        button[disabled]{
+          background-color: #cccccc;
+          color: #666666;
         }
   
         .toggle {
@@ -146,3 +159,13 @@
     margin-top: 10px;
     margin-bottom: 20px;
   }
+}
+
+.mainContainer .--react--toast-alert{
+  text-align: center;
+  width: 400px;
+  left: 25%;
+  top: -20px;
+}
+
+  

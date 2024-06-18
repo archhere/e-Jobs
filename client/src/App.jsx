@@ -20,6 +20,8 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { ToastContainer } from 'react-custom-alert';
+import 'react-custom-alert/dist/index.css';
 
 function App() {
   const queryClient = new QueryClient();
@@ -27,6 +29,7 @@ function App() {
     return (
       <div className="app">
         <QueryClientProvider client={queryClient}>
+          <ToastContainer position="top-center" limit={1} floatingTime={8000} />
           <Navbar />
           <Outlet />
           <Footer />
@@ -53,7 +56,7 @@ function App() {
           element: <MyGigs />,
         },
         {
-          path: "/orders",
+          path: "/MyAcceptedBids",
           element: <Orders />,
         },
         {
@@ -76,15 +79,15 @@ function App() {
           path: "/profile/:userId",
           element: <Profile />,
         },
+        {
+          path: "/login",
+          element: <Login />,
+        }
       ],
     },
     {
       path: "/register",
       element: <Register />,
-    },
-    {
-      path: "/login",
-      element: <Login />,
     },
     {
       path: "/pay/:id",

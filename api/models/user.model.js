@@ -40,10 +40,6 @@ const userSchema = new Schema({
       type: [String],
       required: false
   },
-  cat: {
-    type: [String],
-    required: false
-},
   sales: {
     type: Number,
     default: 0

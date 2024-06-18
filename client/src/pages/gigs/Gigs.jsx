@@ -3,17 +3,18 @@ import "./Gigs.scss";
 import GigCard from "../../components/gigCard/GigCard";
 import newRequest from "../../utils/newRequest";
 import { useQuery } from "@tanstack/react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { 
   LOADING, ERROR_GENERIC
 } from "../../utils/constants";
 
 
 function Gigs() {
-  const [sort, setSort] = useState("sales");
+  const [sort, setSort] = useState("bid");
   const [open, setOpen] = useState(false);
   const minRef = useRef();
   const maxRef = useRef();
+  const navigate = useNavigate();
 
   const {search} = useLocation();
   const params =  new URLSearchParams(search)
@@ -21,7 +22,7 @@ function Gigs() {
   const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["gigs"],
     queryFn: () => 
-      newRequest.get(`/gigs${search}&min=${minRef.current.value}&max=${maxRef.current.value}&sort=${sort}`).then((res) => {
+      newRequest.get(`/gigs${search || "?"}&min=${minRef.current.value}&max=${maxRef.current.value}&sort=${sort}`).then((res) => {
         return res.data;
       })
   });
@@ -42,7 +43,6 @@ function Gigs() {
   return (
     <div className="gigs">
       <div className="container">
-        <span className="breadcrumbs">Ejobs {">"} {category}{">"}</span>
         <h1>Postings in {category}</h1>
         <p>
           Find the latest and hottest jobs in Ejobs
@@ -57,17 +57,17 @@ function Gigs() {
           <div className="right">
             <span className="sortBy">Sort by</span>
             <span className="sortType">
-              {sort === "sales" ? "Best Selling" : "Newest"}
+              {sort === "bid" ? "Most Active" : "Newest"}
             </span>
-            <img src="./img/down.png" alt="" onClick={() => setOpen(!open)} />
+            <img src="/img/down.png" alt="" onClick={() => setOpen(!open)} />
             {open && (
               <div className="rightMenu">
-                {sort === "sales" ? (
+                {sort === "bid" ? (
                   <span onClick={() => reSort("createdAt")}>Newest</span>
                 ) : (
-                  <span onClick={() => reSort("sales")}>Best Selling</span>
+                  <span onClick={() => reSort("totalBids")}>Most Active</span>
                   )}
-                  <span onClick={() => reSort("sales")}>Popular</span>
+                  <span onClick={() => reSort("totalBids")}>Popular</span>
               </div>
             )}
           </div>

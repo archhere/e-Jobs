@@ -44,13 +44,11 @@ function Profile() {
         const contactTo = userId;
         try {
           const res = await newRequest.get(`conversations/single/${contactFrom}/${contactTo}`);
-          
-          navigate(`/message/${res.data.conversationId}/${data?._id}`);
+          navigate(`/message/${res?.data?._id}/${user?._id}`);
         } catch(error) {
-          if(error.response.status === 404) {
+          if(error?.response?.status === 404) {
             const res = await newRequest.post(`/conversations/`, {user1: contactFrom, user2: contactTo});
-            console.log("aadghadg", res)
-            navigate(`/message/${res.data.conversationId}/${data?._id})`);
+            navigate(`/message/${res?.data?._id}/${user?._id})`);
           }
         }
       }
@@ -83,7 +81,7 @@ function Profile() {
                                     {user.desc}
                                 </p>
                             </div>
-                            {<Reviews userId={userId} selfProfile/>}
+                            {<Reviews userId={userId} selfProfile={selfProfile}/>}
                         </div>
                     </div>
                 </div>

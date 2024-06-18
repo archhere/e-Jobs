@@ -39,6 +39,10 @@ const GigSchema = new Schema({
         type: [String],
         required: false
     },
+    totalBids: {
+        type: Number,
+        default: 0
+    },
     bidder: {
         type: String,
         default: ""

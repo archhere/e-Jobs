@@ -1,52 +1,78 @@
+import { GRAPHICS_AND_DESIGN, WRITING_AND_TRANSLATION, AI_SERVICES,
+  DIGITAL_MARKETING,  MUSIC_AND_AUDIO, PROGRAMMING_AND_TECH, BUSINESS, LIFESTYLE
+} from "./utils/constants";
+
 export const cards = [
   {
     id: 1,
     title: "AI Artists",
+    cat: GRAPHICS_AND_DESIGN,
     desc: "Add talent to AI",
     img: "https://images.pexels.com/photos/7532110/pexels-photo-7532110.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
   },
   {
     id: 2,
+    title: "Data Analysis",
+    cat: PROGRAMMING_AND_TECH,
+    desc: "Identify patterns",
+    img: "https://unsplash.com/photos/person-using-laptop-FlPc9_VocJ4?auto=compress&cs=tinysrgb&w=1600&lazy=load",
+  },
+  {
+    id: 3,
     title: "Logo Design",
+    cat: GRAPHICS_AND_DESIGN,
     desc: "Build yor brand",
     img: "https://images.pexels.com/photos/11295165/pexels-photo-11295165.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
   },
   {
-    id: 3,
+    id: 4,
     title: "WordPress",
+    cat: WRITING_AND_TRANSLATION,
     desc: "Customize your site",
     img: "https://images.pexels.com/photos/4371669/pexels-photo-4371669.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
   },
   {
-    id: 4,
+    id: 5,
     title: "Voice Over",
+    cat: MUSIC_AND_AUDIO,
     desc: "Share your message",
     img: "https://images.pexels.com/photos/7608079/pexels-photo-7608079.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
   },
   {
-    id: 5,
+    id: 6,
     title: "Video Explainer",
+    cat: MUSIC_AND_AUDIO,
     desc: "Engage your audience",
     img: "https://images.pexels.com/photos/13388047/pexels-photo-13388047.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
   },
   {
-    id: 6,
+    id: 7,
     title: "Social Media",
+    cat: DIGITAL_MARKETING,
     desc: "Reach more customers",
     img: "https://images.pexels.com/photos/11378899/pexels-photo-11378899.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
   },
   {
-    id: 7,
+    id: 8,
     title: "SEO",
+    cat: DIGITAL_MARKETING,
     desc: "Unlock growth online",
     img: "https://images.pexels.com/photos/4820241/pexels-photo-4820241.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
   },
   {
     id: 8,
     title: "Illustration",
+    cat: GRAPHICS_AND_DESIGN,
     desc: "Color you dreams",
     img: "https://images.pexels.com/photos/15032623/pexels-photo-15032623.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
   },
+  {
+    id: 8,
+    title: "Explore",
+    cat: AI_SERVICES,
+    desc: "Automate everything",
+    img: "https://unsplash.com/photos/a-computer-circuit-board-with-the-letters-ai-printed-on-it-Pd7ilbhA50M?auto=compress&cs=tinysrgb&w=1600&lazy=load",
+  }
 ];
 
 export const projects = [

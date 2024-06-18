@@ -5,10 +5,8 @@ import { createError } from "../utils/helper.js";
 
 export const getConversations = async (req, res, next) => {
     try {
-        const { userId, isSeller } = req;
-        const conversations = await Conversation.find(
-            isSeller ? {sellerId: userId} : {buyerId: userId}
-        ).sort({ updatedAt: -1 });
+        const {  userId } = req;
+        const conversations = await Conversation.find({$or:[{user1: userId},{user2: userId}]}).sort({ updatedAt: -1 });
         res.status(200).send(conversations);
     } catch(err){
         next(err);
@@ -53,7 +51,7 @@ export const getSingleConversation = async (req, res, next) => {
             desc: "Hello!"
         });
         const savedMessage = await newMessage.save();
-        res.status(200).send(savedMessage);
+        res.status(200).send(conversation1 || conversation2);
 
     } catch(err){
         next(err);

@@ -2,11 +2,14 @@ import React, { useState, useMemo } from "react"
 import "./Register.scss";
 import upload from "../../utils/upload";
 import newRequest from "../../utils/newRequest";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Multiselect from 'multiselect-react-dropdown';
 import Select from 'react-select'
 import countryList from 'react-select-country-list'
-import { SKILL_OPTIONS } from "../../utils/constants";
+import { SKILL_OPTIONS, POSTER_PLACEHOLDER, BIDDER_PLACEHOLDER, ERROR_GENERIC } from "../../utils/constants";
+import { toast } from 'react-custom-alert';
+import { ToastContainer } from 'react-custom-alert';
+import 'react-custom-alert/dist/index.css';
 
 
 function Register() {
@@ -16,11 +19,9 @@ function Register() {
     email: "",
     password: "",
     img: "",
-    country: "",
     isSeller: false,
     desc: "",
-    cat: [],
-    skills: []
+    cat: []
   });
   const countryOptions = useMemo(() => countryList().getData(), []);
   const [country, setCountry] = useState('')
@@ -47,7 +48,6 @@ function Register() {
   }
 
   const updateSkills = () => {
-    console.log(selectedskills)
     const arr = [];
     selectedskills.forEach((skill) => {
       arr.push(skill.value);
@@ -64,19 +64,28 @@ function Register() {
         country: country.label,
         skills: updateSkills()
     }
-    console.log(body)
+
     try{
       await newRequest.post("auth/register", body)
+      //to-do handle login after registration
       navigate("/");
     } catch(err) {
-      console.log(err)
+      handleError(err?.response?.data || ERROR_GENERIC)
     }
   }
 
-  console.log(selectedskills)
+  const handleError = (err) => {
+    return toast.error(err, {toastId: err});
+  }
+
+  const descPlaceHolder = user?.isSeller ? POSTER_PLACEHOLDER : POSTER_PLACEHOLDER + BIDDER_PLACEHOLDER
+
 
   return (
-    <div className="register">
+    <div className="mainContainer">
+      <ToastContainer position="top-center" limit={1} floatingTime={8000} />
+      <Link to="/login" className="linkBack">Sign in</Link>
+      <div className="register">
       <form onSubmit={handleSubmit}>
         <div className="left">
           <h1>Create a new account</h1>
@@ -92,7 +101,12 @@ function Register() {
             <label className="countryLabel" htmlFor="">Country</label>
             <Select options={countryOptions} value={country} onChange={setCountry} />
           </div>
-          <button type="submit">Register</button>
+          <button 
+            disabled = {!user.username.length || !user.password.length || !user.email.length || !country?.label?.length} 
+            type="submit"
+          >
+            Register
+          </button>
         </div>
         <div className="right">
         <h1>I want to become a job poster</h1>
@@ -112,7 +126,7 @@ function Register() {
           />
           <label htmlFor="">Description</label>
           <textarea
-            placeholder="A short description of yourself"
+            placeholder={descPlaceHolder}
             name="desc"
             id=""
             cols="30"
@@ -131,10 +145,11 @@ function Register() {
                 displayValue="label" 
                 placeholder=""
               />
-          </div>
+            </div>
           )}
-        </div>
-      </form>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }

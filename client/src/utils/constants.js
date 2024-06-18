@@ -35,6 +35,8 @@ export const STEPPER = {
 
 export const PAYMENT_SUCCESS = "Payment successful. You are being redirected to the orders page. Please do not close or refresh this page";
 
+export const POSTER_PLACEHOLDER = "A short description of yourself";
+export const BIDDER_PLACEHOLDER = "along with list of all your skills and proficiencies";
 //Categories
 export const GRAPHICS_AND_DESIGN = "Graphics & Design";
 export const VIDEO_AND_ANIMATION = "Video & Animation";
@@ -47,12 +49,13 @@ export const LIFESTYLE = "Lifestyle";
 export const AI_SERVICES = "AI Services";
 
 export const  SKILL_OPTIONS = [
-    { label: WEB_DESIGN, value: WEB_DESIGN},
-    { label: TECHNICAL_WRITING, value: TECHNICAL_WRITING},
-    { label: EXCEL, value: EXCEL},
-    { label: CREATIVE_WRITING, value: CREATIVE_WRITING},
-    { label: FULL_STACK_WEB_DEVELOPMENT, value: FULL_STACK_WEB_DEVELOPMENT},
-    { label: PHOTOGRAPHY, value: PHOTOGRAPHY},
-    { label: ANIMATION, value: ANIMATION},
-    {label: SOUND_RECORDING, value: SOUND_RECORDING}
+    { label: GRAPHICS_AND_DESIGN, value: GRAPHICS_AND_DESIGN},
+    { label: VIDEO_AND_ANIMATION, value: VIDEO_AND_ANIMATION},
+    { label: WRITING_AND_TRANSLATION, value: WRITING_AND_TRANSLATION},
+    { label: DIGITAL_MARKETING, value: DIGITAL_MARKETING},
+    { label: MUSIC_AND_AUDIO, value: MUSIC_AND_AUDIO},
+    { label: PROGRAMMING_AND_TECH, value: PROGRAMMING_AND_TECH},
+    { label: BUSINESS, value: BUSINESS},
+    {label: LIFESTYLE, value: LIFESTYLE},
+    {label: AI_SERVICES, value: AI_SERVICES}
 ];

@@ -74,7 +74,7 @@ function Navbar() {
                 <Link className="link" to={`/profile/${getCurrentUser()._id}`}>
                   My Profile
                 </Link>
-                <Link className="link" to="/orders">
+                <Link className="link" to="/MyAcceptedBids">
                   My Bids
                 </Link>
                 <Link className="link" to="/messages">
@@ -87,7 +87,7 @@ function Navbar() {
             </div>
           ) : (
             <>
-              <Link to="/login" className="links">Sign in</Link>
+              <Link to="/login" className="link">Sign in</Link>
               <Link className="link" to="/register">
                 <button>Join</button>
               </Link>
@@ -99,31 +99,34 @@ function Navbar() {
         <>
           <hr />
           <div className="menu">
-            <Link className="link menuLink" to="/">
+          <Link className="link menuLink" to={`/gigs?`}>
+              All Categories
+            </Link>
+            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(GRAPHICS_AND_DESIGN)}`}>
               {GRAPHICS_AND_DESIGN}
             </Link>
-            <Link className="link menuLink" to="/">
+            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(VIDEO_AND_ANIMATION)}`}>
               {VIDEO_AND_ANIMATION}
             </Link>
-            <Link className="link menuLink" to="/">
+            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(WRITING_AND_TRANSLATION)}`}>
               {WRITING_AND_TRANSLATION}
             </Link>
-            <Link className="link menuLink" to="/">
+            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(AI_SERVICES)}`}>
               {AI_SERVICES}
             </Link>
-            <Link className="link menuLink" to="/">
+            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(DIGITAL_MARKETING)}`}>
               {DIGITAL_MARKETING}
             </Link>
-            <Link className="link menuLink" to="/">
+            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(MUSIC_AND_AUDIO)}`}>
               {MUSIC_AND_AUDIO}
             </Link>
-            <Link className="link menuLink" to="/">
+            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(PROGRAMMING_AND_TECH)}`}>
               {PROGRAMMING_AND_TECH}
             </Link>
-            <Link className="link menuLink" to="/">
+            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(BUSINESS)}`}>
               {BUSINESS}
             </Link>
-            <Link className="link menuLink" to="/">
+            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(LIFESTYLE)}`}>
               {LIFESTYLE}
             </Link>
           </div>

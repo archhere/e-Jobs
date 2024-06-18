@@ -9,18 +9,18 @@ import {
 
 const GigCard = ({ item }) => {
 const { isLoading, error, data } = useQuery({
-  queryKey: ["gigUser"],
+  queryKey: ["gigUser", item.userId],
   queryFn: () => 
     newRequest.get(`/users/${item.userId}`).then((res) => {
       return res.data;
     })
 });
 
-const stars = item.totalStars / item.starNumber;
+const stars = data?.totalStars / data?.star;
+console.log(item?.desc.substring(150))
   return (
     <Link to={`/gig/${item._id}`} className="link">
       <div className="gigCard">
-        <img src={item.cover} alt="" />
         <div className="info">
           {isLoading ? (
             LOADING
@@ -32,9 +32,10 @@ const stars = item.totalStars / item.starNumber;
             <span>{data.username}</span>
           </div>
           )}
-          <p>{item.desc}</p>
+          <h3>{item.title}</h3>
+          <p>{item?.desc.substring(0,200)}...</p>
           <div className="star">
-            <img src="./img/star.png" alt="" />
+            <img id ="starimg" src="/img/star.png" alt="" />
             <span>{!isNaN(stars) && Math.round(stars)}</span>
           </div>
         </div>
@@ -44,6 +45,12 @@ const stars = item.totalStars / item.starNumber;
             <span>EARN UPTO</span>
             <h2>
               $ {item.price}
+            </h2>
+          </div>
+          <div className="price">
+            <span>BIDS</span>
+            <h2>
+              {item.totalBids}
             </h2>
           </div>
         </div>

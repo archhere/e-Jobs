@@ -21,7 +21,7 @@ function Profile() {
        user = getCurrentUser();
     } else {
         ({ isLoading: isLoadingUser, error: errorUser, data: user } = useQuery ({
-            queryKey: ["user"],
+            queryKey: ["user", userId],
             queryFn: () => 
                 newRequest.get(`users/${userId}`).then((res) => {
                 return res.data;
@@ -48,7 +48,7 @@ function Profile() {
         } catch(error) {
           if(error?.response?.status === 404) {
             const res = await newRequest.post(`/conversations/`, {user1: contactFrom, user2: contactTo});
-            navigate(`/message/${res?.data?._id}/${user?._id})`);
+            navigate(`/message/${res?.data?._id}/${user?._id}`);
           }
         }
       }

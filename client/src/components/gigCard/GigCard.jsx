@@ -17,7 +17,6 @@ const { isLoading, error, data } = useQuery({
 });
 
 const stars = data?.totalStars / data?.star;
-console.log(item?.desc.substring(150))
   return (
     <Link to={`/gig/${item._id}`} className="link">
       <div className="gigCard">

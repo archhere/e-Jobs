@@ -22,6 +22,7 @@ export const createConversation = async (req, res, next) => {
            readByUser1: userId === user1,
            readByUser2: userId === user2
         });
+        console.log("adadad", user1, user2)
         const savedConversation = await newConversation.save();
         const newMessage = new Message({
             conversationId: savedConversation?._id,

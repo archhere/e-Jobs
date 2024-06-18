@@ -20,7 +20,7 @@ function Gig() {
   const navigate = useNavigate();
   const { id } = params;
   const { isLoading, error, data, refetch } = useQuery ({
-    queryKey: ["gig"],
+    queryKey: ["gig", id],
     queryFn: () => 
       newRequest.get(`gigs/single/${id}`).then((res) => {
         return res.data;
@@ -39,13 +39,12 @@ function Gig() {
 
   const userId = data?.userId;
   const status = data?.status;
-  console.log(status)
   const isPoster = userId === getCurrentUser()._id;
   const isBidder = data?.bidder === getCurrentUser()._id;
   const activeStep = STEPPER[status];
 
   const { isLoading: isLoadingUser, error: errorUser, data: dataUser } = useQuery ({
-    queryKey: ["user"],
+    queryKey: ["user", userId],
     queryFn: () => 
       newRequest.get(`users/${userId}`).then((res) => {
         return res.data;
@@ -91,6 +90,20 @@ function Gig() {
     return dayConverter(dateToFinish);
   }
 
+  const handleContact = async () => {
+    const contactFrom = getCurrentUser()?._id;
+    const contactTo = userId;
+    try {
+      const res = await newRequest.get(`conversations/single/${contactFrom}/${contactTo}`);
+      navigate(`/message/${res?.data?._id}/${contactTo}`);
+    } catch(error) {
+      if(error?.response?.status === 404) {
+        const res = await newRequest.post(`/conversations/`, {user1: contactFrom, user2: contactTo});
+        navigate(`/message/${res?.data?._id}/${contactTo}`);
+      }
+    }
+  }
+
   const daysToBid = fetchDaystoBid();
   const daysToComplete = fetchDaystoComplete();
 
@@ -128,7 +141,7 @@ function Gig() {
                   />
                   <div className="info">
                     <span>{dataUser.username}</span>
-                    <button>Contact Me</button>
+                    {!isPoster && <button  onClick={handleContact} >Contact Me</button>}
                   </div>
                 </div>
                 <p>

@@ -7,15 +7,17 @@ import { WIP } from "../../utils/constants";
 import {useNavigate } from "react-router-dom";
 
 function Bids({bids, gigId, bidCompleted}) {
-
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
+    const bidAmountMap = {}; //updating into a map to keep track of bid price
+    bids?.forEach(bid => bidAmountMap[bid?.bidder] = bid?.bidAmount)
+
     const combinedQueries = useQueries({
       queries: bids.map((bid) => ({
-        queryKey: ['post', bid],
+        queryKey: ['post', bid?.bidder],
         queryFn: () => 
-          newRequest.get(`users/${bid}`).then((res) => {
+          newRequest.get(`users/${bid?.bidder}`).then((res) => {
             return res.data;
           }),
       })),
@@ -55,6 +57,7 @@ function Bids({bids, gigId, bidCompleted}) {
                   <tr>
                       <th>Username</th>
                       <th>Skills</th>
+                      <th>Bid Amount</th>
                       <th>Rating</th>
                       <th>Action</th>
                   </tr>
@@ -62,6 +65,7 @@ function Bids({bids, gigId, bidCompleted}) {
                     <tr key={val}>
                         <td onClick={() => navigate(`/profile/${val._id}`)}>{val.username}</td>
                         <td onClick={() => navigate(`/profile/${val._id}`)}>{val.skills.join(" , ")}</td>
+                        <td onClick={() => navigate(`/profile/${val._id}`)}>{bidAmountMap[val._id]}</td>
                         <td onClick={() => navigate(`/profile/${val._id}`)}>{val.star}</td>
                         <td>
                         <button

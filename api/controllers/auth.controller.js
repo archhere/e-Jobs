@@ -19,23 +19,6 @@ export const register =  async (req, res, next) => {
     }
 }
 
-export const updateProfile = async (req, res, next) => {
-    try {
-        const { params: { id }, body } = req;
-       const updatedConversation = await User.findByIdAndUpdate({id}, 
-        {
-            $set: {
-               ...body 
-            }
-        },
-        {new: true}
-       );
-       res.status(200).send(updatedConversation);
-    } catch(err){
-        next(err);
-    }
-}
-
 export const login = async (req, res, next) => {
     try {
         const {username, password} = req.body;

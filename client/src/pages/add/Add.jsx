@@ -7,8 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { 
   GRAPHICS_AND_DESIGN, VIDEO_AND_ANIMATION, LIFESTYLE, WRITING_AND_TRANSLATION,
-  DIGITAL_MARKETING, MUSIC_AND_AUDIO, PROGRAMMING_AND_TECH, BUSINESS, AI_SERVICES
+  DIGITAL_MARKETING, MUSIC_AND_AUDIO, PROGRAMMING_AND_TECH, BUSINESS, AI_SERVICES, ERROR_GENERIC
 } from "../../utils/constants";
+import { toast } from 'react-custom-alert';
 
 const Add = () => {
   const [state, dispatch] = useReducer(gigReducer, INITIAL_STATE);
@@ -21,9 +22,17 @@ const Add = () => {
           return newRequest.post("/gigs", gig)
       },
       onSuccess: () => {
-          queryClient.invalidateQueries(["myGigs"])
+          queryClient.invalidateQueries(["myGigs"]);
+          navigate("/mygigs");
+      },
+      onError: (err) => {
+        handleError(err?.response?.data || ERROR_GENERIC)
       }
   })  
+
+  const handleError = (err) => {
+    return toast.error(err, {toastId: err});
+  }
 
   const handleChange = (e) => {
     dispatch({
@@ -43,7 +52,6 @@ const Add = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     mutation.mutate(state);
-    navigate("/mygigs");
   }
 
   return (
@@ -103,7 +111,7 @@ const Add = () => {
                 </div>
               ))}
             </div>
-            <label htmlFor="">Price</label>
+            <label htmlFor="">Max Price</label>
             <input type="number" min={0} onChange={handleChange} name="price" />
           </div>
         </div>

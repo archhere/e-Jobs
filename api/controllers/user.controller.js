@@ -33,3 +33,20 @@ export const getUser = async (req, res, next) => {
         res.status(500).send(`${ERROR_UNKNOWN}`);
     }
 }
+
+export const updateProfile = async (req, res, next) => {
+    try {
+        const {isSeller, userId, body} = req;
+       const updatedProfile = await User.findByIdAndUpdate({_id: userId}, 
+        {
+            $set: {
+               ...body 
+            }
+        },
+        {new: true}
+       );
+       res.status(200).send(updatedProfile);
+    } catch(err){
+        next(err);
+    }
+}

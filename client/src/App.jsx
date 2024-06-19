@@ -13,6 +13,7 @@ import Orders from "./pages/orders/Orders";
 import Messages from "./pages/messages/Messages";
 import Message from "./pages/message/Message";
 import MyGigs from "./pages/myGigs/MyGigs";
+import EditProfile from "./pages/profile/EditProfile";
 import Pay from "./pages/pay/Pay";
 import Success from "./pages/success/Success";
 import Profile from "./pages/profile/Profile";
@@ -74,6 +75,10 @@ function App() {
         {
           path: "/gig/:id",
           element: <Gig />,
+        },
+        {
+          path: "/editprofile",
+          element: <EditProfile />,
         },
         {
           path: "/profile/:userId",

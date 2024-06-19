@@ -31,10 +31,11 @@ function Login() {
       <form onSubmit={handleSubmit}>
         <h1>Sign in</h1>
         <label htmlFor="">Username</label>
-        <input name="username" type="text" placeholder="username" onChange={e=>setUsername(e.target.value)}/>
+        <input data-testid="username" name="username" type="text" placeholder="username" onChange={e=>setUsername(e.target.value)}/>
 
         <label htmlFor="">Password</label>
         <input
+          data-testid="password"
           name="password"
           type="password"
           onChange={e=>{setPassword(e.target.value)}}

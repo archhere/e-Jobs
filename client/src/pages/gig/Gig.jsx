@@ -14,11 +14,15 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 
 function Gig() {
+  // Contains all the gig details
+  //Stepper shows current status
+  // To-do add informational alerts for bidder and poster
 
   const params = useParams();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { id } = params;
+
   const { isLoading, error, data, refetch } = useQuery ({
     queryKey: ["gig", id],
     queryFn: () => 
@@ -32,7 +36,6 @@ function Gig() {
     { title: WIP },
     { title: READY_FOR_REVIEW },
     { title: APPROVED },
-    { title: PAID },
     { title: COMPLETED },
   ];
   
@@ -66,11 +69,18 @@ function Gig() {
     }
   })  
 
+  //doing this calculation because bidders and price are stored in an object 
+  // in mongoDB
+
+  const hasUserAlreadyBid = (bids) => {
+    return bids.some(bid => bid.bidder === getCurrentUser()._id);
+  }
+
   const handleSubmit = (isBid, body) => {
     mutation.mutate({isBid, body});
-    if (body?.status === APPROVED) {
-      navigate(`/pay/${id}`)
-    }
+    // if (body?.status === APPROVED) { //TODO Fix stripe payment screen issue
+    //   navigate(`/pay/${id}`)
+    // }
     
   }
 
@@ -107,7 +117,7 @@ function Gig() {
   const daysToBid = fetchDaystoBid();
   const daysToComplete = fetchDaystoComplete();
 
-  return (
+  return ( // To-do Break down the return functiom 
     <div className="gig">
       {isLoading ? 
       <ClipLoader
@@ -165,7 +175,7 @@ function Gig() {
                   </div>
                   <div className="item">
                     <span className="title">Payment</span>
-                    <span className="desc">Fixed at ${data.price}</span>
+                    <span className="desc">Capped at ${data.price}</span>
                   </div>
                   <div className="item">
                     <span className="title">Expected date of completion</span>
@@ -189,7 +199,7 @@ function Gig() {
                   </div>
                   <div className="item">
                     <span className="title">Bids Count</span>
-                    <span className="desc">{data.bids.length}</span>
+                    <span className="desc">{data?.totalBids}</span>
                   </div>
                 </div>
                 <hr />
@@ -220,8 +230,8 @@ function Gig() {
           {!isPoster && status === OPEN_BID && (
             <button
               className="bid" 
-              disabled = {data?.bids.includes(getCurrentUser()._id)}
-              onClick={() => handleSubmit(true, {})}
+              disabled = {hasUserAlreadyBid(data?.bids)}
+              onClick={() => navigate(`/editProfile?gigId=${id}&max=${data?.price}`)}
             > 
               Bid
             </button>
@@ -247,15 +257,15 @@ function Gig() {
               APPROVE
             </button>
           )}
-          {isPoster && status === APPROVED && (
+          {/* {isPoster && status === APPROVED && (
             <button
               className="bid" 
               onClick={() => navigate(`/pay/${id}`)}
             > 
               PAY NOW
             </button>
-          )}
-          {isBidder && status === PAID && (
+          )} */}
+          {isBidder && status === APPROVED && (
             <button
               className="bid" 
               onClick={() => handleSubmit(false, {status: COMPLETED})}

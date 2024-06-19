@@ -126,3 +126,26 @@
         }
     }
  }
+
+ #bidButton{
+  margin-top: 20px;
+  width: 200px;
+ }
+
+ div #bidPrice{
+  flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+  label {
+    color: gray;
+    font-size: 18px;
+  }
+
+  input,
+  textarea {
+    padding: 20px;
+    border: 1px solid rgb(216, 214, 214);
+  }
+ }

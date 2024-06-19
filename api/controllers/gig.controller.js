@@ -37,12 +37,14 @@ export const updateGig = async (req, res, next) => {
         let updatedGig;
 
         if (isBid?.trim()?.toLowerCase() === "true") { //only bidder flow
+            const {query: { bidPrice } } = req;
+            const bidAmount = (bidPrice && Number(bidPrice)) || 0;
             if (gig.userId === userId) return next(createError(403, ERROR_CANNOT_BID));
             if (Date(gig.bidLastDate) > Date.now() && isBid) return next(createError(500, ERROR_CANNOT_BID_EXPIRED));
             const { bids } = gig;
             if (bids.includes(userId)) return next(createError(403, ERROR_CANNOT_TWICE));
             updatedGig = await Gig.findByIdAndUpdate({_id: id}, 
-                { '$push': { 'bids': userId }, $inc: {totalBids: 1} }
+                { '$push': { 'bids': {bidder: userId, bidAmount} }, $inc: {totalBids: 1} }
             );
         } else { //only poster flow unless bidder is changing status
             const { body: { status } } = req;
@@ -90,9 +92,10 @@ export const intent = async (req, res, next) => {
 export const confirm = async (req, res, next) => {
     try {
         const { body: { payment_intent } } = req;
+        console.log("adajdhjadhj", payment_intent, typeof payment_intent)
         const orders = await Gig.findByIdAndUpdate(
             {
-                payment_intent
+                payment_intent: payment_intent
             }, 
             {
                 $set: {status: PAID}
@@ -101,6 +104,7 @@ export const confirm = async (req, res, next) => {
         res.status(200).send(ORDER_CONFIRMED);
 
     } catch(err){
+        console.log("adadfd", err)
         next(err);
     }
 }
@@ -138,7 +142,6 @@ export const getGig = async (req, res, next) => {
 
 export const getGigs = async (req, res, next) => {
     const {query: {userId, cat, min, max, search, sort, bidder, status}} = req;
-    console.log("dadhgahjdgh", cat)
     // Using spread operator to 
     const filters = {
         ...(userId && { userId }),
@@ -153,7 +156,6 @@ export const getGigs = async (req, res, next) => {
         }),
         ...(search && { title: { $regex: search, $options: "i" } }),
     };
-    console.log("adahdja", filters, cat)
     try {
         const gigs = await Gig.find(filters).sort({ [sort]: -1 });
 

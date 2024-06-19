@@ -36,7 +36,10 @@ const GigSchema = new Schema({
         required: true
     },
     bids: {
-        type: [String],
+        type: [{
+            bidder : String,
+            bidAmount : Number
+        }],
         required: false
     },
     totalBids: {
@@ -55,7 +58,7 @@ const GigSchema = new Schema({
     },
     payment_intent: {
         type: String,
-        required: false,
+        default: "temp"
     }
 }, {
     timestamps: true

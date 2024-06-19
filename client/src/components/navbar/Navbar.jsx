@@ -4,7 +4,7 @@ import "./Navbar.scss";
 import newRequest from "../../utils/newRequest";
 import { 
   GRAPHICS_AND_DESIGN, VIDEO_AND_ANIMATION, LIFESTYLE, WRITING_AND_TRANSLATION,
-  DIGITAL_MARKETING, MUSIC_AND_AUDIO, PROGRAMMING_AND_TECH, BUSINESS, AI_SERVICES
+  DIGITAL_MARKETING, MUSIC_AND_AUDIO, PROGRAMMING_AND_TECH, BUSINESS, AI_SERVICES, OPEN_BID
 } from "../../utils/constants";
 import getCurrentUser from "../../utils/getCurrentUser";
 
@@ -52,7 +52,7 @@ function Navbar() {
           <span>Ejobs Business</span>
           <span>Explore</span>
           <span>English</span>
-          {!currentUser?.isSeller && <span>Become a Job Poster</span>}
+          {!currentUser?.isSeller && <span id = "editProfileNav" onClick={() => navigate(`/editProfile`)}>Become a Job Poster</span>}
           {currentUser ? (
             <div className="user" onClick={()=>setOpen(!open)}>
               <img
@@ -99,34 +99,34 @@ function Navbar() {
         <>
           <hr />
           <div className="menu">
-          <Link className="link menuLink" to={`/gigs?`}>
+          <Link className="link menuLink" to={`/gigs?id=1&status=${encodeURIComponent(OPEN_BID)}`}>
               All Categories
             </Link>
-            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(GRAPHICS_AND_DESIGN)}`}>
+            <Link className="link menuLink" to={`/gigs/?id=2&cat=${encodeURIComponent(GRAPHICS_AND_DESIGN)}`}>
               {GRAPHICS_AND_DESIGN}
             </Link>
-            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(VIDEO_AND_ANIMATION)}`}>
+            <Link className="link menuLink" to={`/gigs/?id=3&cat=${encodeURIComponent(VIDEO_AND_ANIMATION)}`}>
               {VIDEO_AND_ANIMATION}
             </Link>
-            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(WRITING_AND_TRANSLATION)}`}>
+            <Link className="link menuLink" to={`/gigs/?id=4&cat=${encodeURIComponent(WRITING_AND_TRANSLATION)}`}>
               {WRITING_AND_TRANSLATION}
             </Link>
-            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(AI_SERVICES)}`}>
+            <Link className="link menuLink" to={`/gigs/?id=5&cat=${encodeURIComponent(AI_SERVICES)}`}>
               {AI_SERVICES}
             </Link>
-            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(DIGITAL_MARKETING)}`}>
+            <Link className="link menuLink" to={`/gigs/?id=6&cat=${encodeURIComponent(DIGITAL_MARKETING)}`}>
               {DIGITAL_MARKETING}
             </Link>
-            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(MUSIC_AND_AUDIO)}`}>
+            <Link className="link menuLink" to={`/gigs/?id=7&cat=${encodeURIComponent(MUSIC_AND_AUDIO)}`}>
               {MUSIC_AND_AUDIO}
             </Link>
-            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(PROGRAMMING_AND_TECH)}`}>
+            <Link className="link menuLink" to={`/gigs/?id=8&cat=${encodeURIComponent(PROGRAMMING_AND_TECH)}`}>
               {PROGRAMMING_AND_TECH}
             </Link>
-            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(BUSINESS)}`}>
+            <Link className="link menuLink" to={`/gigs/?id=9&cat=${encodeURIComponent(BUSINESS)}`}>
               {BUSINESS}
             </Link>
-            <Link className="link menuLink" to={`/gigs/?cat=${encodeURIComponent(LIFESTYLE)}`}>
+            <Link className="link menuLink" to={`/gigs/?id=10&cat=${encodeURIComponent(LIFESTYLE)}`}>
               {LIFESTYLE}
             </Link>
           </div>

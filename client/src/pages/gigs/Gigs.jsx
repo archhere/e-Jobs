@@ -3,7 +3,7 @@ import "./Gigs.scss";
 import GigCard from "../../components/gigCard/GigCard";
 import newRequest from "../../utils/newRequest";
 import { useQuery } from "@tanstack/react-query";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { 
   LOADING, ERROR_GENERIC
 } from "../../utils/constants";
@@ -14,9 +14,11 @@ function Gigs() {
   const [open, setOpen] = useState(false);
   const minRef = useRef();
   const maxRef = useRef();
-  const navigate = useNavigate();
+ 
 
   const {search} = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams(); // Using this to refresh page without unmount
+  const id = searchParams.get("id");
   const params =  new URLSearchParams(search)
   const category = params.get("cat");
   const { isLoading, error, data, refetch } = useQuery({
@@ -33,8 +35,9 @@ function Gigs() {
   };
 
   useEffect(() => {
+    console.log("hisahdahd")
     refetch();
-  }, [sort])
+  }, [id], [sort])
 
   const apply = ()=>{
     refetch();

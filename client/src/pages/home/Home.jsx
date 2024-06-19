@@ -2,7 +2,7 @@ import React from "react";
 import "./Home.scss";
 import Featured from "../../components/featured/Featured";
 import GigCard from "../../components/gigCard/GigCard";
-import { LOADING, ERROR_GENERIC
+import { LOADING, ERROR_GENERIC, OPEN_BID
 } from "../../utils/constants";
 import newRequest from "../../utils/newRequest";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +12,7 @@ function Home() {
   const { isLoading, error, data } = useQuery({
     queryKey: ["gigs"],
     queryFn: () => 
-      newRequest.get("/gigs?sort=totalBids").then((res) => {
+      newRequest.get(`/gigs?status=${encodeURIComponent(OPEN_BID)}&sort=totalBids`).then((res) => {
         return res.data;
       })
   });

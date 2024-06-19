@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import {useNavigate } from "react-router-dom";
 import "./Featured.scss";
+import { 
+    GRAPHICS_AND_DESIGN, WRITING_AND_TRANSLATION,
+    PROGRAMMING_AND_TECH,AI_SERVICES
+  } from "../../utils/constants";
 
 function Featured() {
   const [input, setInput] = useState();
@@ -27,10 +31,10 @@ function Featured() {
           </div>
           <div className="popular">
             <span>Popular:</span>
-            <button>Web Design</button>
-            <button>WordPress</button>
-            <button>Logo Design</button>
-            <button>AI Services</button>
+            <button onClick={() => navigate(`/gigs/?cat=${encodeURIComponent(PROGRAMMING_AND_TECH)}`)}>Web Development</button>
+            <button onClick={() => navigate(`/gigs/?cat=${encodeURIComponent(WRITING_AND_TRANSLATION)}`)}>WordPress</button>
+            <button onClick={() => navigate(`/gigs/?cat=${encodeURIComponent(GRAPHICS_AND_DESIGN)}`)}>Logo Design</button>
+            <button onClick={() => navigate(`/gigs/?cat=${encodeURIComponent(AI_SERVICES)}`)}>AI Services</button>
           </div>
         </div>
       </div>

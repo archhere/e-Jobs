@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer } from "react";
 import "./Add.scss";
 import { INITIAL_STATE, gigReducer } from "../../reducers/gigReducer";
 import { CHANGE_INPUT, ADD_FEATURE, REMOVE_FEATURE} from "../../utils/constants";
@@ -92,9 +92,9 @@ const Add = () => {
           </div>
           <div className="details">
             <label htmlFor="">Delivery Date</label>
-            <input type="datetime-local" name="projectDeliveryDate" onChange={handleChange} />
+            <input type="datetime-local" min="{{today()}}" name="projectDeliveryDate" onChange={handleChange} />
             <label htmlFor="">Last day to bid</label>
-            <input type="datetime-local" name="bidLastDate" onChange={handleChange} />
+            <input type="datetime-local"  min="{{today()}}" name="bidLastDate" onChange={handleChange} />
             <label htmlFor="">Add Features</label>
             <form action="" className="add" onSubmit={handleFeature}>
               <input type="text" placeholder="e.g Node JS"/>

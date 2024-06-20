@@ -2,7 +2,6 @@ import React from "react";
 import "./Bids.scss";
 import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
-import getCurrentUser from "../../utils/getCurrentUser";
 import { WIP } from "../../utils/constants";
 import {useNavigate } from "react-router-dom";
 
@@ -13,7 +12,7 @@ function Bids({bids, gigId, bidCompleted}) {
     const bidAmountMap = {}; //updating into a map to keep track of bid price
     bids?.forEach(bid => bidAmountMap[bid?.bidder] = bid?.bidAmount)
 
-    const combinedQueries = useQueries({
+    const combinedQueries = useQueries({ //using combined queries to fetch all user data
       queries: bids.map((bid) => ({
         queryKey: ['post', bid?.bidder],
         queryFn: () => 

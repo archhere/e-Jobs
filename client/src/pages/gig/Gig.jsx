@@ -6,7 +6,7 @@ import getCurrentUser from "../../utils/getCurrentUser";
 import { useMutation, useQuery , useQueryClient } from "@tanstack/react-query";
 import Bids from "../../components/bids/Bids";
 import { 
-  LOADING, ERROR_GENERIC, OPEN_BID, WIP, READY_FOR_REVIEW, APPROVED, COMPLETED, STEPPER, PAID
+  ERROR_GENERIC, OPEN_BID, WIP, READY_FOR_REVIEW, APPROVED, COMPLETED, STEPPER
 } from "../../utils/constants";
 import Stepper from 'react-stepper-horizontal';
 import { useNavigate } from "react-router-dom";

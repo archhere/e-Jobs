@@ -1,8 +1,7 @@
 import Review from "../models/review.model.js";
-import Gig from "../models/gig.model.js";
 import { createError } from "../utils/helper.js";
 import User from "../models/user.model.js";
-import { ERROR_SELLERS_CANT_CREATE_REVIEW, ERROR_ALREADY_REVIEWED } from "../utils/constants.js"
+import { ERROR_ALREADY_REVIEWED } from "../utils/constants.js"
 
 
 export const createReview = async (req, res, next) => {
@@ -27,7 +26,6 @@ export const createReview = async (req, res, next) => {
         res.status(201).send(savedReview);
         
     } catch (error) {
-        console.log("aafaf", error)
         next(error);
     }
 }

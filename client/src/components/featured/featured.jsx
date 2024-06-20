@@ -31,10 +31,10 @@ function Featured() {
           </div>
           <div className="popular">
             <span>Popular:</span>
-            <button onClick={() => navigate(`/gigs/?cat=${encodeURIComponent(PROGRAMMING_AND_TECH)}`)}>Web Development</button>
-            <button onClick={() => navigate(`/gigs/?cat=${encodeURIComponent(WRITING_AND_TRANSLATION)}`)}>WordPress</button>
-            <button onClick={() => navigate(`/gigs/?cat=${encodeURIComponent(GRAPHICS_AND_DESIGN)}`)}>Logo Design</button>
-            <button onClick={() => navigate(`/gigs/?cat=${encodeURIComponent(AI_SERVICES)}`)}>AI Services</button>
+            <button onClick={() => navigate(`/gigs?id=6&cat=${encodeURIComponent(PROGRAMMING_AND_TECH)}`)}>Web Development</button>
+            <button onClick={() => navigate(`/gigs?id=3&cat=${encodeURIComponent(WRITING_AND_TRANSLATION)}`)}>WordPress</button>
+            <button onClick={() => navigate(`/gigs?id=1&cat=${encodeURIComponent(GRAPHICS_AND_DESIGN)}`)}>Logo Design</button>
+            <button onClick={() => navigate(`/gigs?id=7&cat=${encodeURIComponent(AI_SERVICES)}`)}>AI Services</button>
           </div>
         </div>
       </div>

@@ -3,10 +3,10 @@ import {
     ERROR_GIG_CREATE_ONLY_SELLERS, GIG_ALREADY_DELETED, ERROR_DELETE_NOT_OWN_GIG, 
     DELETED, ERROR_GIG_NOT_FOUND, ERROR_CANNOT_EDIT_NOTOWNED_GIG, ERROR_CANNOT_BID, 
     ERROR_CANNOT_TWICE,
-    WIP,
     READY_FOR_REVIEW,
     PAID,
-    COMPLETED
+    COMPLETED,
+    ERROR_GIG_PAST_DUE
 } from "../utils/constants.js";
 import Gig from "../models/gig.model.js";
 import get from "lodash.get";
@@ -15,6 +15,12 @@ import Stripe from "stripe";
 export const createGig = async (req, res, next) => {
     try {
         const {isSeller, userId, body} = req;
+        const {bidLastDate , projectDeliveryDate} = body;
+        const daysToBid = new Date(bidLastDate)?.getTime();
+        const daysToDeliver = new Date(projectDeliveryDate)?.getTime();
+        if (dayConverter(daysToBid) < 1 || dayConverter(daysToDeliver) < 1) {
+            return next(createError(403, ERROR_GIG_PAST_DUE)); //Error for gigs with past dates
+        }
         if (!isSeller) return next(createError(403, ERROR_GIG_CREATE_ONLY_SELLERS));
         const newGig = new Gig({
             ...body,
@@ -26,6 +32,12 @@ export const createGig = async (req, res, next) => {
         next(err);
     }
 }
+
+const dayConverter = (dateToBid) => {
+    const today = new Date().getTime();
+    const timeinmilisec = dateToBid - today;
+    return (timeinmilisec > 0) ? Math.ceil(timeinmilisec / (1000 * 60 * 60 * 24)) : 0;
+  }
 
 
 export const updateGig = async (req, res, next) => {
@@ -92,7 +104,6 @@ export const intent = async (req, res, next) => {
 export const confirm = async (req, res, next) => {
     try {
         const { body: { payment_intent } } = req;
-        console.log("adajdhjadhj", payment_intent, typeof payment_intent)
         const orders = await Gig.findByIdAndUpdate(
             {
                 payment_intent: payment_intent
@@ -104,7 +115,6 @@ export const confirm = async (req, res, next) => {
         res.status(200).send(ORDER_CONFIRMED);
 
     } catch(err){
-        console.log("adadfd", err)
         next(err);
     }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Orders.scss";
 import newRequest from "../../utils/newRequest";
 import { useQuery } from "@tanstack/react-query";
@@ -16,21 +16,6 @@ const Orders = () => {
         return res.data;
       })
   });
-
-  const handleContact = async (order) => {
-    const sellerId = order.sellerId;
-    const buyerId = order.buyerId;
-    const id = sellerId + buyerId;
-    try {
-      const res = await newRequest.get(`conversations/single/${id}`)
-      navigate(`/message/${res.data.id}`);
-    } catch(error) {
-      if(error.response.status === 404) {
-        const res = await newRequest.post(`/conversations/`, {to: currentUser.seller ? buyerId : sellerId});
-        navigate(`/message/${res.data.id}`);
-      }
-    }
-  }
 
   return (
     <div className="myGigs">

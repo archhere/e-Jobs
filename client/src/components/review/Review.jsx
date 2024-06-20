@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 
 const Review = ({review}) => {
-    console.log("adahgdahd", review)
     const { desc, star, reviewerId, revieweeId } = review;
     const { isLoading, error, data } = useQuery ({
         queryKey: [review.reviewerId],

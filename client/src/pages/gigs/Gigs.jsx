@@ -35,7 +35,6 @@ function Gigs() {
   };
 
   useEffect(() => {
-    console.log("hisahdahd")
     refetch();
   }, [id], [sort])
 

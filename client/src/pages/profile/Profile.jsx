@@ -3,7 +3,7 @@ import "./Profile.scss";
 import React  from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Reviews from "../../components/reviews/Reviews";
-import { useMutation, useQuery , useQueryClient } from "@tanstack/react-query";
+import { useQuery  } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 
 

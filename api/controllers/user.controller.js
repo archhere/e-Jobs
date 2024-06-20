@@ -25,11 +25,28 @@ export const getUser = async (req, res, next) => {
         const id = get(req, "params.id");
         const user = await User.findById(id);
         if (!user) {
-            res.status(404).send(USER_NOT_FOUND);
+            next(createError(404, USER_NOT_FOUND));
         }  else {
             res.status(200).send(user);
         }
     } catch (error) {
         res.status(500).send(`${ERROR_UNKNOWN}`);
+    }
+}
+
+export const updateProfile = async (req, res, next) => {
+    try {
+        const { userId, body } = req;
+       const updatedProfile = await User.findByIdAndUpdate({_id: userId}, 
+        {
+            $set: {
+               ...body 
+            }
+        },
+        {new: true}
+       );
+       res.status(200).send(updatedProfile);
+    } catch(err){
+        next(err);
     }
 }

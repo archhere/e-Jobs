@@ -28,11 +28,11 @@ export const login = async (req, res, next) => {
                 id: user._id,
                 isSeller: user.isSeller
             }, process.env.JWT_KEY);
-            const {password, ...info} = user._doc;
+            const {password, ...info} = user._doc; 
             return res
                 .cookie(ACCESS_TOKEN, token, {httpOnly: true})
                 .status(200)
-                .send(info);
+                .send(info); 
         } else {
             next(createError(404, ERROR_INVALID_USERNAME_PWD));
         }

@@ -1,93 +1,56 @@
 import React from "react";
 import "./Footer.scss";
+import { 
+  GRAPHICS_AND_DESIGN, VIDEO_AND_ANIMATION, LIFESTYLE, WRITING_AND_TRANSLATION,
+  DIGITAL_MARKETING, MUSIC_AND_AUDIO, PROGRAMMING_AND_TECH, BUSINESS, AI_SERVICES,
+  PHOTOGRAPHY, OPEN_BID
+} from "../../utils/constants";
+import {useNavigate } from "react-router-dom";
 
 function Footer() {
+
+  const navigate = useNavigate();
+
   return (
     <div className="footer">
       <div className="container">
         <div className="top">
           <div className="item">
             <h2>Categories</h2>
-            <span>Graphics & Design</span>
-            <span>Digital Marketing</span>
-            <span>Writing & Translation</span>
-            <span>Video & Animation</span>
-            <span>Music & Audio</span>
-            <span>Programming & Tech</span>
-            <span>Data</span>
-            <span>Business</span>
-            <span>Lifestyle</span>
-            <span>Photography</span>
-            <span>Sitemap</span>
+            <span onClick={() => navigate(`/gigs?id=1&cat=${encodeURIComponent(GRAPHICS_AND_DESIGN)}`)}>{GRAPHICS_AND_DESIGN}</span>
+            <span onClick={() => navigate(`/gigs/?id=2&cat=${encodeURIComponent(DIGITAL_MARKETING)}`)}>{DIGITAL_MARKETING}</span>
+            <span onClick={() => navigate(`/gigs/?id=3&cat=${encodeURIComponent(WRITING_AND_TRANSLATION)}`)}>{WRITING_AND_TRANSLATION}</span>
           </div>
           <div className="item">
-            <h2>About</h2>
-            <span>Press & News</span>
-            <span>Partnerships</span>
-            <span>Privacy Policy</span>
-            <span>Terms of Service</span>
-            <span>Intellectual Property Claims</span>
-            <span>Investor Relations</span>
-            <span>Contact Sales</span>
+            <h2>Categories</h2>
+            <span onClick={() => navigate(`/gigs/?id=4&cat=${encodeURIComponent(VIDEO_AND_ANIMATION)}`)}>{VIDEO_AND_ANIMATION}</span>
+            <span onClick={() => navigate(`/gigs/?id=5&cat=${encodeURIComponent(MUSIC_AND_AUDIO)}`)}>{MUSIC_AND_AUDIO}</span>
+            <span onClick={() => navigate(`/gigs/?id=6&cat=${encodeURIComponent(PROGRAMMING_AND_TECH)}`)}>{PROGRAMMING_AND_TECH}</span>
+          </div>
+          <div className="item">
+            <h2>Categories</h2>
+            <span onClick={() => navigate(`/gigs/?id=7&cat=${encodeURIComponent(AI_SERVICES)}`)}>{AI_SERVICES}</span>
+            <span onClick={() => navigate(`/gigs/?id=8&cat=${encodeURIComponent(BUSINESS)}`)}>{BUSINESS}</span>
+            <span onClick={() => navigate(`/gigs/?id=9&cat=${encodeURIComponent(LIFESTYLE)}`)}>{LIFESTYLE}</span>
+          </div>
+          <div className="item">
+            <h2>Categories</h2>
+            <span onClick={() => navigate(`/gigs/?id=10&cat=${encodeURIComponent(PHOTOGRAPHY)}`)}>Photography</span>
+            <span onClick={() => navigate(`/gigs?id=11&status=${encodeURIComponent(OPEN_BID)}`)}>All</span>
           </div>
           <div className="item">
             <h2>Support</h2>
             <span>Help & Support</span>
             <span>Trust & Safety</span>
-            <span>Selling on Liverr</span>
-            <span>Buying on Liverr</span>
-          </div>
-          <div className="item">
-            <h2>Community</h2>
-            <span>Customer Success Stories</span>
-            <span>Community hub</span>
-            <span>Forum</span>
-            <span>Events</span>
-            <span>Blog</span>
-            <span>Influencers</span>
-            <span>Affiliates</span>
-            <span>Podcast</span>
-            <span>Invite a Friend</span>
-            <span>Become a Seller</span>
-            <span>Community Standards</span>
-          </div>
-          <div className="item">
-            <h2>More From Fiverr</h2>
-            <span>Liverr Business</span>
-            <span>Liverr Pro</span>
-            <span>Liverr Logo Maker</span>
-            <span>Liverr Guides</span>
-            <span>Get Inspired</span>
-            <span>Liverr Select</span>
-            <span>ClearVoice</span>
-            <span>Liverr Workspace</span>
-            <span>Learn</span>
-            <span>Working Not Working</span>
+            <span>Posting on Ejobs</span>
+            <span>Bidding on Ejobs</span>
           </div>
         </div>
         <hr />
         <div className="bottom">
           <div className="left">
-            <h2>liverr</h2>
-            <span>© Liverr International Ltd. 2023</span>
-          </div>
-          <div className="right">
-            <div className="social">
-              <img src="/img/twitter.png" alt="" />
-              <img src="/img/facebook.png" alt="" />
-              <img src="/img/linkedin.png" alt="" />
-              <img src="/img/pinterest.png" alt="" />
-              <img src="/img/instagram.png" alt="" />
-            </div>
-            <div className="link">
-              <img src="/img/language.png" alt="" />
-              <span>English</span>
-            </div>
-            <div className="link">
-              <img src="/img/coin.png" alt="" />
-              <span>USD</span>
-            </div>
-            <img src="/img/accessibility.png" alt="" />
+            <h2>Ejobs</h2>
+            <span>© Ejobs International Ltd. 2024</span>
           </div>
         </div>
       </div>

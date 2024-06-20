@@ -6,7 +6,7 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 
-
+// Not used currently. Will add back after fixing bug with payment
 const CheckoutForm = () => {
 
     const stripe = useStripe();

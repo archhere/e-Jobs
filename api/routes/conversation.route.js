@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/", verifyToken, getConversations);
 router.post("/", verifyToken, createConversation);
-router.get("/single/:id", verifyToken, getSingleConversation);
+router.get("/single/:user1/:user2", verifyToken, getSingleConversation);
 router.put("/:id", verifyToken, updateConversation);
 
 export default router;

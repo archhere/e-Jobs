@@ -3,24 +3,19 @@ const { Schema } = mongoose;
 
 const ConversationSchema = new Schema(
   {
-    id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    sellerId: {
+    user1: {
       type: String,
       required: true,
     },
-    buyerId: {
+    user2: {
       type: String,
       required: true,
     },
-    readBySeller: {
+    readByUser1: {
       type: Boolean,
       required: true,
     },
-    readByBuyer: {
+    readByUser2: {
       type: Boolean,
       required: true,
     },

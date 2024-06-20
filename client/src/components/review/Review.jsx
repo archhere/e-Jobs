@@ -4,11 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 
 const Review = ({review}) => {
-    const { desc, star, userId } = review;
+    const { desc, star, reviewerId, revieweeId } = review;
     const { isLoading, error, data } = useQuery ({
-        queryKey: [review.userId],
+        queryKey: [review.reviewerId],
         queryFn: () => 
-          newRequest.get(`/users/${userId}`).then((res) => {
+          newRequest.get(`/users/${reviewerId}`).then((res) => {
             return res.data;
           })
       });
@@ -33,20 +33,13 @@ const Review = ({review}) => {
             )}
             <div className="stars">
                 {Array(review.star).fill().map((item,i) => (
-                    <img src="/img/star.png" alt="" key={i} />
+                    <img id ="starimg" src="/img/star.png" alt="" key={i} />
                 ))}
                 <span>{star}</span>
             </div>
             <p>
                 {desc}
             </p>
-            <div className="helpful">
-                <span>Helpful?</span>
-                <img src="/img/like.png" alt="" />
-                <span>Yes</span>
-                <img src="/img/dislike.png" alt="" />
-                <span>No</span>
-            </div>
         </div>
     )
 }

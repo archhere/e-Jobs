@@ -13,12 +13,16 @@ import Orders from "./pages/orders/Orders";
 import Messages from "./pages/messages/Messages";
 import Message from "./pages/message/Message";
 import MyGigs from "./pages/myGigs/MyGigs";
+import EditProfile from "./pages/profile/EditProfile";
 import Pay from "./pages/pay/Pay";
 import Success from "./pages/success/Success";
+import Profile from "./pages/profile/Profile";
 import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { ToastContainer } from 'react-custom-alert';
+import 'react-custom-alert/dist/index.css';
 
 function App() {
   const queryClient = new QueryClient();
@@ -26,6 +30,7 @@ function App() {
     return (
       <div className="app">
         <QueryClientProvider client={queryClient}>
+          <ToastContainer position="top-center" limit={1} floatingTime={8000} />
           <Navbar />
           <Outlet />
           <Footer />
@@ -52,7 +57,7 @@ function App() {
           element: <MyGigs />,
         },
         {
-          path: "/orders",
+          path: "/MyAcceptedBids",
           element: <Orders />,
         },
         {
@@ -60,7 +65,7 @@ function App() {
           element: <Messages />,
         },
         {
-          path: "/message/:id",
+          path: "/message/:id/:userId",
           element: <Message />,
         },
         {
@@ -71,15 +76,23 @@ function App() {
           path: "/gig/:id",
           element: <Gig />,
         },
+        {
+          path: "/editprofile",
+          element: <EditProfile />,
+        },
+        {
+          path: "/profile/:userId",
+          element: <Profile />,
+        },
+        {
+          path: "/login",
+          element: <Login />,
+        }
       ],
     },
     {
       path: "/register",
       element: <Register />,
-    },
-    {
-      path: "/login",
-      element: <Login />,
     },
     {
       path: "/pay/:id",

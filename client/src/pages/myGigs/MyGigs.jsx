@@ -1,13 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import "./MyGigs.scss";
 import getCurrentUser from "../../utils/getCurrentUser";
 import newRequest from "../../utils/newRequest";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function MyGigs() {
   const currentUser = getCurrentUser();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { isLoading, error, data } = useQuery ({
       queryKey: ["myGigs"],
       queryFn: () => 
@@ -29,45 +31,62 @@ function MyGigs() {
     mutation.mutate(id);
   }
 
+  const date = new Date()
+
   return (
     <div className="myGigs">
-      {isLoading ? "Loading" : error ? "Something went wrong" : (
+      {isLoading ? 
+        <ClipLoader
+          color={"#1dbf73"}
+          size={20}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        /> : error ? "Something went wrong" : (
         <div className="container">
           <div className="title">
-            <h1>Gigs</h1>
+            <h1>My job postings</h1>
             {currentUser.isSeller && (
               <Link to="/add">
-                <button>Add New Gig</button>
+                <button>Add New job posting</button>
               </Link>
             )}
           </div>
           <table>
             <tr>
-              <th>Image</th>
               <th>Title</th>
+              <th>BidLastDate</th>
+              <th>ProjectLastDate</th>
+              <th>Status</th>
+              <th>Total bids</th>
+              <th>Category</th>
               <th>Price</th>
-              <th>Sales</th>
               <th>Action</th>
             </tr>
             {data.map(gig => (
               <tr key={gig._id}>
-                <td>
-                  <img
-                    className="image"
-                    src={gig.cover}
-                    alt=""
-                  />
-                </td>
-                <td>{gig.title}</td>
-                <td>{gig.price}</td>
-                <td>{gig.sales}</td>
-                <td>
+                <td onClick={() => navigate(`/gig/${gig._id}`)}>{gig.title}</td>
+                <td onClick={() => navigate(`/gig/${gig._id}`)}>{new Date(gig?.bidLastDate)?.toLocaleString("en-US", {timeZone: "PST"})}</td>
+                <td onClick={() => navigate(`/gig/${gig._id}`)}>{new Date(gig?.projectDeliveryDate)?.toLocaleString("en-US", {timeZone: "PST"})}</td>
+                <td onClick={() => navigate(`/gig/${gig._id}`)}>{gig.status}</td>
+                <td onClick={() => navigate(`/gig/${gig._id}`)}>{gig.bids.length}</td>
+                <td onClick={() => navigate(`/gig/${gig._id}`)}>{gig.cat}</td>
+                <td onClick={() => navigate(`/gig/${gig._id}`)}>{gig.price}</td>
+                {gig.bidder === "" ? <td>
                   <img 
                     className="delete" 
                     src="./img/delete.png" 
+                    disabled = {gig.bidder === ""}
                     alt="" onClick={() => handleDelete(gig._id)}
                   />
-                </td>
+                </td> : 
+                <td>
+                  <img 
+                    className="delete" 
+                    src="./img/coin.png"
+                    onClick={() => navigate(`/pay/${gig._id}`)}
+                    alt=""
+                  />
+                </td>}
               </tr>
             ))
             }

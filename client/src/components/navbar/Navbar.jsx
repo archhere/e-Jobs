@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.scss";
 import newRequest from "../../utils/newRequest";
+import { 
+  GRAPHICS_AND_DESIGN, VIDEO_AND_ANIMATION, LIFESTYLE, WRITING_AND_TRANSLATION,
+  DIGITAL_MARKETING, MUSIC_AND_AUDIO, PROGRAMMING_AND_TECH, BUSINESS, AI_SERVICES, OPEN_BID
+} from "../../utils/constants";
+import getCurrentUser from "../../utils/getCurrentUser";
 
 function Navbar() {
   const [active, setActive] = useState(false);
@@ -39,15 +44,15 @@ function Navbar() {
       <div className="container">
         <div className="logo">
           <Link className="link" to="/">
-            <span className="text">liverr</span>
+            <span className="text">Ejobs</span>
           </Link>
           <span className="dot">.</span>
         </div>
         <div className="links">
-          <span>Liverr Business</span>
+          <span>Ejobs Business</span>
           <span>Explore</span>
           <span>English</span>
-          {!currentUser?.isSeller && <span>Become a Seller</span>}
+          {!currentUser?.isSeller && <span id = "editProfileNav" onClick={() => navigate(`/editProfile`)}>Become a Job Poster</span>}
           {currentUser ? (
             <div className="user" onClick={()=>setOpen(!open)}>
               <img
@@ -59,15 +64,18 @@ function Navbar() {
                 {currentUser.isSeller && (
                   <>
                     <Link className="link" to="/mygigs">
-                      Gigs
+                      My Job Postings
                     </Link>
                     <Link className="link" to="/add">
-                      Add New Gig
+                      Add job posting
                     </Link>
                   </>
                 )}
-                <Link className="link" to="/orders">
-                  Orders
+                <Link className="link" to={`/profile/${getCurrentUser()._id}`}>
+                  My Profile
+                </Link>
+                <Link className="link" to="/MyAcceptedBids">
+                  My Bids
                 </Link>
                 <Link className="link" to="/messages">
                   Messages
@@ -79,7 +87,7 @@ function Navbar() {
             </div>
           ) : (
             <>
-              <Link to="/login" className="links">Sign in</Link>
+              <Link to="/login" className="link">Sign in</Link>
               <Link className="link" to="/register">
                 <button>Join</button>
               </Link>
@@ -91,32 +99,35 @@ function Navbar() {
         <>
           <hr />
           <div className="menu">
-            <Link className="link menuLink" to="/">
-              Graphics & Design
+          <Link className="link menuLink" to={`/gigs?id=1&status=${encodeURIComponent(OPEN_BID)}`}>
+              All Categories
             </Link>
-            <Link className="link menuLink" to="/">
-              Video & Animation
+            <Link className="link menuLink" to={`/gigs/?id=2&cat=${encodeURIComponent(GRAPHICS_AND_DESIGN)}`}>
+              {GRAPHICS_AND_DESIGN}
             </Link>
-            <Link className="link menuLink" to="/">
-              Writing & Translation
+            <Link className="link menuLink" to={`/gigs/?id=3&cat=${encodeURIComponent(VIDEO_AND_ANIMATION)}`}>
+              {VIDEO_AND_ANIMATION}
             </Link>
-            <Link className="link menuLink" to="/">
-              AI Services
+            <Link className="link menuLink" to={`/gigs/?id=4&cat=${encodeURIComponent(WRITING_AND_TRANSLATION)}`}>
+              {WRITING_AND_TRANSLATION}
             </Link>
-            <Link className="link menuLink" to="/">
-              Digital Marketing
+            <Link className="link menuLink" to={`/gigs/?id=5&cat=${encodeURIComponent(AI_SERVICES)}`}>
+              {AI_SERVICES}
             </Link>
-            <Link className="link menuLink" to="/">
-              Music & Audio
+            <Link className="link menuLink" to={`/gigs/?id=6&cat=${encodeURIComponent(DIGITAL_MARKETING)}`}>
+              {DIGITAL_MARKETING}
             </Link>
-            <Link className="link menuLink" to="/">
-              Programming & Tech
+            <Link className="link menuLink" to={`/gigs/?id=7&cat=${encodeURIComponent(MUSIC_AND_AUDIO)}`}>
+              {MUSIC_AND_AUDIO}
             </Link>
-            <Link className="link menuLink" to="/">
-              Business
+            <Link className="link menuLink" to={`/gigs/?id=8&cat=${encodeURIComponent(PROGRAMMING_AND_TECH)}`}>
+              {PROGRAMMING_AND_TECH}
             </Link>
-            <Link className="link menuLink" to="/">
-              Lifestyle
+            <Link className="link menuLink" to={`/gigs/?id=9&cat=${encodeURIComponent(BUSINESS)}`}>
+              {BUSINESS}
+            </Link>
+            <Link className="link menuLink" to={`/gigs/?id=10&cat=${encodeURIComponent(LIFESTYLE)}`}>
+              {LIFESTYLE}
             </Link>
           </div>
           <hr />

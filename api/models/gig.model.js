@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
+import { OPEN_BID, WIP, READY_FOR_REVIEW, APPROVED, COMPLETED, PAID } from '../utils/constants.js';
 
 const GigSchema = new Schema({
     userId: {
@@ -14,14 +15,6 @@ const GigSchema = new Schema({
         type: String,
         required: true
     },
-    totalStars: {
-        type: Number,
-        default: 0
-    },
-    starNumber: {
-        type: Number,
-        default: 0
-    },
     cat: {
         type: String,
         required: true
@@ -30,37 +23,42 @@ const GigSchema = new Schema({
         type: Number,
         required: true
     },
-    cover: {
-        type: String,
-        required: true
-    },
-    images: {
-        type: [String],
-        required: false
-    },
-    shortTitle: {
-        type: String,
-        required: true
-    },
-    shortDesc: {
-        type: String,
-        required: true
-    },
-    deliveryTime: {
-        type: Number,
-        required: true
-    },
-    revisionNumber: {
-        type: Number,
-        required: true
-    },
     features: {
         type: [String],
+        required: true
+    },
+    bidLastDate: {
+        type: Date,
+        required: true
+    },
+    projectDeliveryDate: {
+        type: Date,
+        required: true
+    },
+    bids: {
+        type: [{
+            bidder : String,
+            bidAmount : Number
+        }],
         required: false
     },
-    sales: {
+    totalBids: {
         type: Number,
         default: 0
+    },
+    bidder: {
+        type: String,
+        default: ""
+    },
+    status: {
+        type: String,
+        required: false,
+        default: OPEN_BID,
+        enum:[OPEN_BID, WIP, READY_FOR_REVIEW, APPROVED, PAID, COMPLETED]
+    },
+    payment_intent: {
+        type: String,
+        default: "temp"
     }
 }, {
     timestamps: true

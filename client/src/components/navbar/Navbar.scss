@@ -9,6 +9,10 @@
   z-index: 999;
   transition: 0.5s all ease;
 
+  #editProfileNav {
+    cursor: pointer;
+  }
+
   &.active {
     background-color: white;
     color: black;
@@ -45,6 +49,7 @@
       gap: 24px;
       font-family: "Montserrat", sans-serif;
       font-weight: 500;
+      
 
       span {
         white-space: nowrap;

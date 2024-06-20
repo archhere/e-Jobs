@@ -31,6 +31,8 @@ npm run test
 
 ### Flow diagrams
 
-![DB-Tables-flowdiagram drawio](https://github.com/archhere/e-Jobs/assets/25038979/5384f0ec-5632-4721-ab21-d61dc5a19aa7)
+![DB-Tables-flowdiagram drawio](https://github.com/archhere/e-Jobs/assets/25038979/4707c4ee-f3c2-47af-874d-cb768e988482)
 
-![DB-Tables drawio](https://github.com/archhere/e-Jobs/assets/25038979/7182e882-71f2-42eb-b844-fcadf1ead8b1)
+
+![DB-Tables-flowdiagram drawio](https://github.com/archhere/e-Jobs/assets/25038979/ba91097f-2e15-4b6f-9dac-bd3a95c410bd)
+
